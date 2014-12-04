@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<configuration>
+    <configSections>
+        <section name="kernel" type="X3Platform.Configuration.KernelConfigurationSectionHandler,X3Platform.Support"/>
+    </configSections>
+    <connectionStrings>
+        <add name="ConnectionString" connectionString="Server=(local);Database=X3Platform;uid=sa;pwd=sa" providerName="System.Data.SqlClient"/>
+    </connectionStrings>
+    <kernel>
+        <key name="HostName" value="http://www.x3platform.com"/>
+        <key name="Version" value="1.0.0."/>
+        <key name="Author" value="ruanyu@live.com"/>
+    </kernel>
+    <startup>
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.0"/>
+    </startup>
+</configuration>
