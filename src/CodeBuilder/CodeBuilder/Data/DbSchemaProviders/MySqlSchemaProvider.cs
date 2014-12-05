@@ -31,23 +31,13 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
         /// <returns>Êý¾Ý¿âÃû³Æ</returns>
         public string GetDatabaseName()
         {
-            string databaseName = null;
+            GenericSqlCommand command = new GenericSqlCommand(connectionString, "MySql");
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlCommand cmd = new SqlCommand();
+            string commandText = "select database()";
 
-                cmd.Connection = conn;
-                cmd.CommandText = "SELECT db_name();";
+            var result = command.ExecuteScalar(commandText);
 
-                conn.Open();
-
-                databaseName = (string)cmd.ExecuteScalar();
-
-                conn.Close();
-            }
-
-            return databaseName;
+            return result == null ? string.Empty : result.ToString();
         }
         #endregion
 

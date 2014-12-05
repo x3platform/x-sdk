@@ -5,15 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E551B38E-90C9-46EF-AB9D-70C016BD5D73}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{565CC896-38B5-4AAB-BAB9-244321A6A52E}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>X3Platform.DataDump.Terminal</RootNamespace>
-    <AssemblyName>dd</AssemblyName>
+    <RootNamespace>X3Platform.CodeBuilder</RootNamespace>
+    <AssemblyName>X3Platform.CodeBuilder</AssemblyName>
     <StartupObject>
     </StartupObject>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>App.ico</ApplicationIcon>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -57,12 +56,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\..\lib\Common.Logging\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\lib\MySQL\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -73,33 +66,56 @@
     <Reference Include="X3Platform.Abstractions">
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="X3Platform.CodeBuilder, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\bin\X3Platform.CodeBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="X3Platform.CodeBuilder.Templates, Version=1.0.3.1001, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\bin\X3Platform.CodeBuilder.Templates.dll</HintPath>
-    </Reference>
-    <Reference Include="X3Platform.DataDump">
-      <HintPath>..\..\..\bin\X3Platform.DataDump.dll</HintPath>
-    </Reference>
     <Reference Include="X3Platform.Support">
-      <HintPath>..\..\..\lib\X3Platform\X3Platform.Support.dll</HintPath>
-    </Reference>
-    <Reference Include="X3Platform.Velocity">
-      <HintPath>..\..\..\lib\X3Platform\X3Platform.Velocity.dll</HintPath>
+      <HintPath>D:\GitHub\x-collaborative-framework\bin\X3Platform.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CodeBuilderEngine.cs" />
+    <Compile Include="Configuration\CodeBuilderTaskCollection.cs" />
+    <Compile Include="Configuration\CodeBuilderConfigurationSectionHandler.cs" />
+    <Compile Include="Configuration\CodeBuilderConfiguration.cs" />
+    <Compile Include="Configuration\CodeBuilderTask.cs" />
+    <Compile Include="Configuration\DatabaseProvider.cs" />
+    <Compile Include="Configuration\TaskObserver.cs" />
+    <Compile Include="Configuration\TaskObserverCollection.cs" />
+    <Compile Include="Configuration\TaskProperty.cs" />
+    <Compile Include="Configuration\TaskPropertyCollection.cs" />
+    <Compile Include="Configuration\SpecialWords.cs" />
+    <Compile Include="Configuration\SpecialWord.cs" />
+    <Compile Include="Data\DatabaseSchema.cs" />
+    <Compile Include="Data\DataColumnSchema.cs" />
+    <Compile Include="Data\DataTableSchema.cs" />
+    <Compile Include="Data\IDbSchemaProvider.cs" />
+    <Compile Include="Data\DataColumnSchemaCollection.cs" />
+    <Compile Include="Data\DbSchemaProviders\MySqlSchemaProvider.cs" />
+    <Compile Include="Data\DbSchemaProviders\OracleSchemaProvider.cs" />
+    <Compile Include="Data\DbSchemaProviders\SqlServerSchemaProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\FieldNameHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="App.example.config" />
+    <Compile Include="Template\ConsoleObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Template\FileObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Template\ITemplateObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Template\TemplateFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Template\TemplateGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <None Include="build.publish.bat" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="App.ico" />
+  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
@@ -117,12 +133,9 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="App.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)build.publish.bat $(ProjectDir) $(TargetDir) $(TargetName) $(ConfigurationName)</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)build.publish.bat "$(ProjectDir)" "$(TargetDir)" "$(TargetName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

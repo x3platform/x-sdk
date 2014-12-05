@@ -1,0 +1,16 @@
+# 文件夹
+obj
+bin
+dist
+doc
+node_modules
+releases
+/src/tests
+
+# 临时文件
+*.suo
+*.user
+
+# 文件
+App.config
+Web.config
