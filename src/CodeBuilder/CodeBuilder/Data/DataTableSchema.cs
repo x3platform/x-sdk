@@ -7,7 +7,7 @@ namespace X3Platform.CodeBuilder.Data
     /// <summary>数据表信息</summary>
     public class DataTableSchema
     {
-        private string m_Name;
+        private string m_Name = string.Empty;
 
         /// <summary>名称</summary>
         public string Name
@@ -16,7 +16,7 @@ namespace X3Platform.CodeBuilder.Data
             set { m_Name = value; }
         }
 
-        private string m_Description;
+        private string m_Description = string.Empty;
 
         /// <summary>描述</summary>
         public string Description

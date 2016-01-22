@@ -10,7 +10,7 @@ namespace X3Platform.CodeBuilder.Data
     /// </summary>
     public class DataColumnSchema
     {
-        private string m_Name;
+        private string m_Name = string.Empty;
 
         /// <summary>名称</summary>
         public string Name
@@ -28,6 +28,15 @@ namespace X3Platform.CodeBuilder.Data
             set { m_PrimaryKey = value; }
         }
 
+        private bool m_ForeignKey;
+
+        /// <summary>外键</summary>
+        public bool ForeignKey
+        {
+            get { return this.m_ForeignKey; }
+            set { this.m_ForeignKey = value; }
+        }
+
         private DbType m_Type;
 
         /// <summary>数据类型</summary>
@@ -35,6 +44,15 @@ namespace X3Platform.CodeBuilder.Data
         {
             get { return m_Type; }
             set { m_Type = value; }
+        }
+
+        private string m_NativeType;
+        
+        /// <summary>原生数据类型</summary>
+        public string NativeType
+        {
+            get { return this.m_NativeType; }
+            set { this.m_NativeType = value; }
         }
 
         private bool m_Nullable;
@@ -72,8 +90,17 @@ namespace X3Platform.CodeBuilder.Data
             get { return m_Scale; }
             set { m_Scale = value; }
         }
+        
+        private string m_DefaultValue = string.Empty;
 
-        private string m_Description;
+        /// <summary>默认值信息</summary>
+        public string DefaultValue
+        {
+            get { return this.m_DefaultValue; }
+            set { this.m_DefaultValue = value; }
+        }
+
+        private string m_Description = string.Empty;
 
         /// <summary>描述信息</summary>
         public string Description

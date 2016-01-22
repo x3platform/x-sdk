@@ -1,0 +1,10 @@
+\Javascript\
+\Web\
+\bin\
+\obj\
+.cs
+.config
+.bat
+.db
+.jpg
+.aspx

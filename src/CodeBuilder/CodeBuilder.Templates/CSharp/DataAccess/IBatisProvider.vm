@@ -125,7 +125,7 @@ namespace ${namespace}
             this.ibatisMapper.Update(StringHelper.ToProcedurePrefix(string.Format("{0}_Update", tableName)), param);
         }
         #endregion
-        
+
         #region 函数:Delete(string id)
         /// <summary>删除记录</summary>
         /// <param name="id">标识</param>
@@ -158,7 +158,7 @@ namespace ${namespace}
             return this.ibatisMapper.QueryForObject<${entityClass}>(StringHelper.ToProcedurePrefix(string.Format("{0}_FindOne", tableName)), args);
         }
 		#endregion
-        
+
         #region 函数:FindAll(DataQuery query)
         /// <summary>查询所有相关记录</summary>
         /// <param name="query">数据查询参数</param>
@@ -166,7 +166,7 @@ namespace ${namespace}
         public IList<${entityClass}> FindAll(DataQuery query)
         {
             Dictionary<string, object> args = new Dictionary<string, object>();
-            
+
             string whereClause = query.GetWhereSql(new Dictionary<string, string>() { { "Name", "LIKE" } });
             string orderBy = query.GetOrderBySql(" UpdateDate DESC ");
 
@@ -188,13 +188,13 @@ namespace ${namespace}
         /// <param name="pageSize">页面大小</param>
         /// <param name="query">数据查询参数</param>
         /// <param name="rowCount">行数</param>
-        /// <returns>返回一个列表实例<see cref="${entityClass}"/></returns> 
+        /// <returns>返回一个列表实例<see cref="${entityClass}"/></returns>
         public IList<${entityClass}> GetPaging(int startIndex, int pageSize, DataQuery query, out int rowCount)
         {
             Dictionary<string, object> args = new Dictionary<string, object>();
 
             string whereClause = query.GetWhereSql(new Dictionary<string, string>() { { "Name", "LIKE" } });
-            string orderBy = query.GetOrderBySql(" UpdateDate DESC ");
+            string orderBy = query.GetOrderBySql(" ModifiedDate DESC ");
 
 #if($supportAuthorization == "ON")
             if (query.Variables["ElevatedPrivileges"] == "1")
@@ -213,7 +213,7 @@ namespace ${namespace}
             args.Add("WhereClause", whereClause);
             args.Add("OrderBy", orderBy);
 
-            IList<${entityClass}> list = this.ibatisMapper.QueryForList<${entityClass}>(StringHelper.ToProcedurePrefix(string.Format("{0}_GetPages", tableName)), args);
+            IList<${entityClass}> list = this.ibatisMapper.QueryForList<${entityClass}>(StringHelper.ToProcedurePrefix(string.Format("{0}_GetPaging", tableName)), args);
 
             rowCount = Convert.ToInt32(this.ibatisMapper.QueryForObject(StringHelper.ToProcedurePrefix(string.Format("{0}_GetRowCount", tableName)), args));
 
@@ -249,15 +249,15 @@ namespace ${namespace}
         private string BindAuthorizationScopeSQL(IDictionary<string, string> variables, string whereClause)
         {
             string scope = string.Format(@" (
-( T.Id IN( 
+( T.Id IN(
          SELECT DISTINCT EntityId FROM view_AuthorizationObject_Account A, ${dataTableName}_Scope S
           WHERE A.AccountId = '{0}'
             AND A.AuthorizationObjectId = S.AuthorizationObjectId
-            AND A.AuthorizationObjectType = S.AuthorizationObjectType) 
-       GROUP BY EntityId) 
- OR ( T.AccountId = '{0}' ) 
+            AND A.AuthorizationObjectType = S.AuthorizationObjectType)
+       GROUP BY EntityId)
+ OR ( T.AccountId = '{0}' )
 ) ", StringHelper.ToSafeSQL(variables["AccountId"]));
-            
+
             if (whereClause.IndexOf(scope) == -1)
             {
                 whereClause = string.IsNullOrEmpty(whereClause) ? scope : scope + " AND " + whereClause;

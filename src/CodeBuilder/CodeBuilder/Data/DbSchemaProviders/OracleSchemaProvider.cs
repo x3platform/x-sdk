@@ -11,6 +11,9 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
 {
     public class OracleSchemaProvider : IDbSchemaProvider
     {
+        /// <summary>数据提供器名称</summary>
+        private const string PROVIDER_NAME = "OracleClient";
+        
         private string connectionString;
 
         public string ConnectionString
@@ -32,6 +35,31 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
         public string GetDatabaseName()
         {
             return string.Empty;
+        }
+        #endregion
+
+        #region 函数:GetTables(string databaseName, string ownerName, string tableNames)
+        /// <summary>查询数据库中多个表的信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableNames">表名, 多个以半角逗号隔开</param>
+        /// <returns>多个数据表信息的列表</returns>
+        public IList<DataTableSchema> GetTables(string databaseName, string ownerName, string tableNames)
+        {
+            IList<DataTableSchema> tables = new List<DataTableSchema>();
+
+            string[] list = tableNames.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string tableName in list)
+            {
+                DataTableSchema table = this.GetTable(databaseName, ownerName, tableName);
+
+                if (table == null) { continue; }
+
+                tables.Add(table);
+            }
+
+            return tables;
         }
         #endregion
 
@@ -165,6 +193,35 @@ select cu.*
                 DataColumnSchema item = new DataColumnSchema();
 
                 item.Name = row["column_name"].ToString();
+
+                list.Add(item);
+            }
+
+            return list;
+        }
+        #endregion
+
+        #region 函数:GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        /// <summary>查询数据库中表的外键字段信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableName">表名</param>
+        /// <returns>外键字段信息集合</returns>
+        public DataColumnSchemaCollection GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        {
+            DataColumnSchemaCollection list = new DataColumnSchemaCollection();
+
+            GenericSqlCommand command = new GenericSqlCommand(connectionString, PROVIDER_NAME);
+
+            string commandText = string.Format("SHOW FULL FIELDS FROM {1} FROM {0} WHERE `Key`='FRI'", databaseName, tableName);
+
+            var table = command.ExecuteQueryForDataTable(commandText);
+
+            foreach (DataRow row in table.Rows)
+            {
+                DataColumnSchema item = new DataColumnSchema();
+
+                item.Name = row["Field"].ToString();
 
                 list.Add(item);
             }

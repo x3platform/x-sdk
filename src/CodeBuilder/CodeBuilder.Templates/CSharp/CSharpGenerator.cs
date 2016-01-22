@@ -9,9 +9,7 @@ using X3Platform.Velocity;
 
 namespace X3Platform.CodeBuilder.Templates.CSharp
 {
-    /// <summary>
-    /// C# 代码生成器
-    /// </summary>
+    /// <summary>C# 代码生成器</summary>
     public abstract class CSharpGenerator : TemplateGenerator
     {
         #region 属性:FileName
@@ -62,8 +60,8 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         #endregion
 
         #region 函数:PrintCopyright()
-        /// <summary>生成描述信息</summary>
-        /// <returns>描述信息</returns>
+        /// <summary>输出版权信息</summary>
+        /// <returns>版权信息</returns>
         protected virtual string PrintCopyright()
         {
             VelocityContext context = new VelocityContext();
@@ -78,6 +76,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         }
         #endregion
 
+        #region 函数:GetFields(DataTableSchema table)
         public IList<CSharpField> GetFields(DataTableSchema table)
         {
             IList<CSharpField> list = new List<CSharpField>();
@@ -94,6 +93,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
 
             return list;
         }
+        #endregion
 
         #region 函数:ConvertType(DbType type)
         /// <summary>
@@ -135,9 +135,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         #endregion
 
         #region 函数:GetDefaultValue(DbType type)
-        /// <summary>
-        /// 类型的默认值。
-        /// </summary>
+        /// <summary>获取类型的默认值</summary>
         /// <param name="type">DbType 类型</param>
         /// <returns>默认值</returns>
         protected virtual string GetDefaultValue(DbType type)
@@ -177,6 +175,6 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
                 default: return "UnknownType";
             }
         }
-        #endregion 
-}
+        #endregion
+    }
 }

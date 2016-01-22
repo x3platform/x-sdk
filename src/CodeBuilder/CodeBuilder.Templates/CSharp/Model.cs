@@ -26,7 +26,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         protected IList<CSharpField> fields;
 
         #region 函数:Init(string taskName, CodeBuilderConfiguration configuration)
-        /// <summary></summary>
+        /// <summary>根据配置信息初始化对象</summary>
         /// <param name="generatorName"></param>
         /// <param name="configuration"></param>
         public override void Init(string taskName, CodeBuilderConfiguration configuration)
@@ -41,14 +41,13 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
             // 实体类名称
             this.ClassName = configuration.Tasks[taskName].Properties["ClassName"].Value;
 
-            //设置 table 信息
-            IDbSchemaProvider provider =
-                (IDbSchemaProvider)Assembly.Load(configuration.DatabaseProvider.Assembly).CreateInstance(configuration.DatabaseProvider.ClassName,
+            // 设置 table 信息
+            IDbSchemaProvider provider = (IDbSchemaProvider)Assembly.Load(configuration.DatabaseProvider.Assembly).CreateInstance(configuration.DatabaseProvider.ClassName,
                     false, BindingFlags.Default,
                     null, new object[] { configuration.DatabaseProvider.ConnectionString },
                     null, null);
 
-            X3Platform.CodeBuilder.Data.DatabaseSchema database = new X3Platform.CodeBuilder.Data.DatabaseSchema();
+            DatabaseSchema database = new DatabaseSchema();
 
             database.Name = provider.GetDatabaseName();
             database.OwnerName = configuration.DatabaseProvider.OwnerName;
@@ -80,6 +79,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         }
         #endregion
 
+        #region 函数:PrintCode()
         public override string PrintCode()
         {
             VelocityContext context = new VelocityContext();
@@ -91,5 +91,6 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
             return VelocityManager.Instance.ParseTemplateVirtualPath(context,
                 X3Platform.Util.StringHelper.NullOrEmptyTo(TemplateFile, "templates/CSharp/Model.vm"));
         }
+        #endregion
     }
 }

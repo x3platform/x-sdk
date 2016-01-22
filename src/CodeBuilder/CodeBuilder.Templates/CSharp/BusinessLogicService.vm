@@ -32,10 +32,8 @@ namespace ${namespace}
         /// <summary>构造函数</summary>
         public ${className}()
         {
-            ${configurationClass} configuration = ${configurationClass}View.Instance.Configuration;
-            
             // 创建对象构建器(Spring.NET)
-            string springObjectFile = configuration.Keys["SpringObjectFile"].Value;
+            string springObjectFile = ${configurationClass}View.Instance.Configuration.Keys["SpringObjectFile"].Value;
 
             SpringObjectBuilder objectBuilder = SpringObjectBuilder.Create(${configurationClass}.ApplicationName, springObjectFile);
 

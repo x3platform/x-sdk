@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using X3Platform.Data;
 
 namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
 {
     public class SqlServerSchemaProvider : IDbSchemaProvider
     {
+        /// <summary>数据提供器名称</summary>
+        private const string PROVIDER_NAME = "SqlServer";
+
         private string connectionString;
 
         public string ConnectionString
@@ -49,6 +53,31 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
         }
         #endregion
 
+        #region 函数:GetTables(string databaseName, string ownerName, string tableNames)
+        /// <summary>查询数据库中多个表的信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableNames">表名, 多个以半角逗号隔开</param>
+        /// <returns>多个数据表信息的列表</returns>
+        public IList<DataTableSchema> GetTables(string databaseName, string ownerName, string tableNames)
+        {
+            IList<DataTableSchema> tables = new List<DataTableSchema>();
+
+            string[] list = tableNames.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string tableName in list)
+            {
+                DataTableSchema table = this.GetTable(databaseName, ownerName, tableName);
+
+                if (table == null) { continue; }
+
+                tables.Add(table);
+            }
+
+            return tables;
+        }
+        #endregion
+
         #region 函数:GetTable(string databaseName, string ownerName, string tableName)
         /// <summary>
         /// 取得数据库名称
@@ -81,7 +110,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
             {
                 foreach (DataColumnSchema item in list)
                 {
-                    for(int i=0; i<table.Columns.Count ; i++)
+                    for (int i = 0; i < table.Columns.Count; i++)
                     {
                         if (table.Columns[i].Name == item.Name)
                         {
@@ -190,7 +219,7 @@ ORDER BY
                             default:
                                 break;
                         }
-                        
+
                         list.Add(item);
                     }
                 }
@@ -263,6 +292,35 @@ ORDER BY
         }
         #endregion
 
+        #region 函数:GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        /// <summary>查询数据库中表的外键字段信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableName">表名</param>
+        /// <returns>外键字段信息集合</returns>
+        public DataColumnSchemaCollection GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        {
+            DataColumnSchemaCollection list = new DataColumnSchemaCollection();
+
+            GenericSqlCommand command = new GenericSqlCommand(connectionString, PROVIDER_NAME);
+
+            string commandText = string.Format("SHOW FULL FIELDS FROM {1} FROM {0} WHERE `Key`='FRI'", databaseName, tableName);
+
+            var table = command.ExecuteQueryForDataTable(commandText);
+
+            foreach (DataRow row in table.Rows)
+            {
+                DataColumnSchema item = new DataColumnSchema();
+
+                item.Name = row["Field"].ToString();
+
+                list.Add(item);
+            }
+
+            return list;
+        }
+        #endregion
+
         #region 函数:GetNoPrimaryKeyColumns(string databaseName, string ownerName, string tableName)
         /// <summary>
         /// 取得数据库名称
@@ -272,7 +330,7 @@ ORDER BY
         public DataColumnSchemaCollection GetNoPrimaryKeyColumns(DataTableSchema table)
         {
             DataColumnSchemaCollection list = new DataColumnSchemaCollection();
-            
+
             for (int i = 0; i < table.Columns.Count; i++)
             {
                 if (!table.Columns[i].PrimaryKey)
@@ -289,20 +347,20 @@ ORDER BY
             switch (type.ToLower())
             {
                 case "nchar":
-                case "char": 
+                case "char":
                 case "nvarchar":
                 case "varchar":
                 case "ntext":
                 case "text": return DbType.String;
-                
+
                 case "datetime": return DbType.DateTime;
                 case "bit": return DbType.Boolean;
 
                 case "smallint": return DbType.Int16;
-                    
+
                 case "int": return DbType.Int32;
                 case "float": return DbType.Double;
-                
+
                 case "money":
                 case "decimal": return DbType.Decimal;
 

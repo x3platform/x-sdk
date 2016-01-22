@@ -9,6 +9,9 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
 
     public class MySqlSchemaProvider : IDbSchemaProvider
     {
+        /// <summary>数据提供器名称</summary>
+        private const string PROVIDER_NAME = "MySql";
+
         private string connectionString;
 
         public string ConnectionString
@@ -41,6 +44,31 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
         }
         #endregion
 
+        #region 函数:GetTables(string databaseName, string ownerName, string tableNames)
+        /// <summary>查询数据库中多个表的信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableNames">表名, 多个以半角逗号隔开</param>
+        /// <returns>多个数据表信息的列表</returns>
+        public IList<DataTableSchema> GetTables(string databaseName, string ownerName, string tableNames)
+        {
+            IList<DataTableSchema> tables = new List<DataTableSchema>();
+
+            string[] list = tableNames.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string tableName in list)
+            {
+                DataTableSchema table = this.GetTable(databaseName, ownerName, tableName);
+
+                if (table == null) { continue; }
+
+                tables.Add(table);
+            }
+
+            return tables;
+        }
+        #endregion
+
         #region 函数:GetTable(string databaseName, string ownerName, string tableName)
         /// <summary>
         /// 取得数据库名称
@@ -60,6 +88,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 table = new DataTableSchema(tableName);
 
                 table.Name = tableName;
+                table.Description = GetTableDescription(databaseName, ownerName, tableName);
 
                 foreach (DataColumnSchema item in list)
                 {
@@ -67,6 +96,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 }
             }
 
+            // 设置主键
             list = GetPrimaryKeyColumns(databaseName, ownerName, tableName);
 
             if (list.Count > 0)
@@ -84,14 +114,59 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 }
             }
 
+            // 设置外键
+            list = GetForeignKeyColumns(databaseName, ownerName, tableName);
+
+            if (list.Count > 0)
+            {
+                foreach (DataColumnSchema item in list)
+                {
+                    for (int i = 0; i < table.Columns.Count; i++)
+                    {
+                        if (table.Columns[i].Name == item.Name)
+                        {
+                            table.Columns[i].ForeignKey = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
             return table;
         }
         #endregion
 
+        #region 函数:GetTableDescription(string databaseName, string ownerName, string tableName)
+        /// <summary>取得数据库名称</summary>
+        /// <param name="tableName">数据表</param>
+        /// <returns>数据库名称</returns>
+        private string GetTableDescription(string databaseName, string ownerName, string tableName)
+        {
+            GenericSqlCommand command = new GenericSqlCommand(connectionString, PROVIDER_NAME);
+
+            string commandText = string.Format("SHOW TABLE STATUS FROM {0}", databaseName);
+
+            var table = command.ExecuteQueryForDataTable(commandText);
+
+            foreach (DataRow row in table.Rows)
+            {
+                if (row["Name"].ToString() == tableName)
+                {
+                    // 输出注释信息
+                    string comment = row["Comment"].ToString();
+
+                    if (comment.IndexOf(';') == -1) return string.Empty;
+
+                    return comment.Substring(0, comment.IndexOf(';'));
+                }
+            }
+
+            return string.Empty;
+        }
+        #endregion
+
         #region 函数:GetColumns(string databaseName, string ownerName, string tableName)
-        /// <summary>
-        /// 取得数据库名称
-        /// </summary>
+        /// <summary>取得数据库名称</summary>
         /// <param name="tableName">数据表</param>
         /// <returns>数据库名称</returns>
         public DataColumnSchemaCollection GetColumns(string databaseName, string ownerName, string tableName)
@@ -108,26 +183,18 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
             {
                 DataColumnSchema item = new DataColumnSchema();
 
+                // 名称
                 item.Name = row["Field"].ToString();
-
+                // 数据类型
                 item.Type = SetDataType(row["Type"].ToString());
-
+                // 原生数据类型
+                item.NativeType = row["Type"].ToString();
+                // 是否允许为空
                 item.Nullable = (row["Null"].ToString() == "NO") ? false : true;
-
-                /*
-                switch (item.Type)
-                {
-                    case DbType.String:
-                        item.Length = (dr["Length"] == DBNull.Value) ? 0 : (int)dr["Length"];
-                        break;
-                    case DbType.Decimal:
-                        item.Precision = (dr["Precision"] == DBNull.Value) ? (byte)0 : (byte)dr["Precision"];
-                        item.Scale = (dr["Scale"] == DBNull.Value) ? 0 : (int)dr["Scale"];
-                        break;
-                    default:
-                        break;
-                }
-                */
+                // 默认值
+                item.DefaultValue = row["Default"].ToString();
+                // 注释
+                item.Description = row["Comment"].ToString();
 
                 list.Add(item);
             }
@@ -149,6 +216,35 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
             GenericSqlCommand command = new GenericSqlCommand(connectionString, "MySql");
 
             string commandText = string.Format("SHOW FULL FIELDS FROM {1} FROM {0} WHERE `Key`='PRI'", databaseName, tableName);
+
+            var table = command.ExecuteQueryForDataTable(commandText);
+
+            foreach (DataRow row in table.Rows)
+            {
+                DataColumnSchema item = new DataColumnSchema();
+
+                item.Name = row["Field"].ToString();
+
+                list.Add(item);
+            }
+
+            return list;
+        }
+        #endregion
+
+        #region 函数:GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        /// <summary>查询数据库中表的外键字段信息</summary>
+        /// <param name="databaseName">数据库</param>
+        /// <param name="ownerName">所有者</param>
+        /// <param name="tableName">表名</param>
+        /// <returns>外键字段信息集合</returns>
+        public DataColumnSchemaCollection GetForeignKeyColumns(string databaseName, string ownerName, string tableName)
+        {
+            DataColumnSchemaCollection list = new DataColumnSchemaCollection();
+
+            GenericSqlCommand command = new GenericSqlCommand(connectionString, "MySql");
+
+            string commandText = string.Format("SHOW FULL FIELDS FROM {1} FROM {0} WHERE `Key`='MUL'", databaseName, tableName);
 
             var table = command.ExecuteQueryForDataTable(commandText);
 
@@ -218,7 +314,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
 
                 case "uniqueidentifier": return DbType.Guid;
 
-                case "image": return DbType.Binary;
+                case "blob": return DbType.Binary;
 
                 default:
                     throw new Exception("设置数据类型失败,可能是未知的新数据类型" + type + "!");
