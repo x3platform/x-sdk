@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDump", "DataDump\DataDump.csproj", "{557AAA5B-FBDC-4950-B1D4-B296F7477FF5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataDump.Terminal", "DataDump.Terminal\DataDump.Terminal.csproj", "{E551B38E-90C9-46EF-AB9D-70C016BD5D73}"

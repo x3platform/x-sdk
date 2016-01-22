@@ -110,7 +110,6 @@
     <Compile Include="Template\TemplateGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <None Include="build.publish.bat" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.ico" />
@@ -135,7 +134,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)build.publish.bat "$(ProjectDir)" "$(TargetDir)" "$(TargetName)"</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)build.publish.cmd "$(ProjectDir)" "$(TargetDir)" "$(TargetName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

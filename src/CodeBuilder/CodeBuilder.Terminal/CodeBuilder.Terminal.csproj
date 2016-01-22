@@ -91,13 +91,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="App.example.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="build.publish.bat" />
+    <None Include="build.publish.cmd" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
