@@ -1,30 +1,18 @@
-﻿#region Using Testing Libraries
-#if NUNIT
-using NUnit.Framework;
-using TestClass = NUnit.Framework.TestFixtureAttribute;
-using TestMethod = NUnit.Framework.TestAttribute;
-using TestInitialize = NUnit.Framework.SetUpAttribute;
-using TestCleanup = NUnit.Framework.TearDownAttribute;
-using TestContext = System.Object;
-#else
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Category = Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute;
-#endif
-
-#endregion
-
-namespace X3Platform.CodeBuilder.Tests
+﻿namespace X3Platform.CodeBuilder.Tests.Data
 {
     using System;
     using System.Text;
     using System.Collections.Generic;
     using System.Configuration;
-    using X3Platform.CodeBuilder.Data;
     using System.Data;
+
+    using NUnit.Framework;
+
+    using X3Platform.CodeBuilder.Data;
     using X3Platform.CodeBuilder.Data.DbSchemaProviders;
 
     /// <summary></summary>
-    [TestClass]
+    [TestFixture]
     public class MySqlProviderTests
     {
         /// <summary>数据库连接字符串</summary>
@@ -34,7 +22,7 @@ namespace X3Platform.CodeBuilder.Tests
         // 测试内容
         //-------------------------------------------------------
 
-        [TestMethod]
+        [Test]
         public void TestGetTable()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();
@@ -47,7 +35,7 @@ namespace X3Platform.CodeBuilder.Tests
             Assert.AreEqual(DbType.String, table.Columns[0].Type);
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetPrimaryKeyColumns()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();
@@ -57,7 +45,7 @@ namespace X3Platform.CodeBuilder.Tests
             var table = provider.GetPrimaryKeyColumns("examples", string.Empty, "tb_News");
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetForeignKeyColumns()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();
