@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <ProjectToBuild Include="CodeBuilder\CodeBuilder.csproj" />
+        <ProjectToBuild Include="CodeBuilder.Terminal\CodeBuilder.Terminal.csproj" />
+        <ProjectToBuild Include="CodeBuilder.Templates\CodeBuilder.Templates.csproj" />
+        <ProjectToBuild Include="CodeBuilder.Tests\CodeBuilder.Tests.csproj" />
+    </ItemGroup>
+    <Target Name="Build">
+        <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;WarningLevel=0" />
+    </Target>
+</Project>

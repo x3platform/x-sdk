@@ -23,7 +23,7 @@ namespace ${namespace}
 #foreach($field in $fields)
 
         #region 属性:${field.Name}
-        /// <summary></summary>
+        /// <summary>${field.Description}</summary>
         public ${field.Type} ${field.Name} { get; set; }
         #endregion
 #end

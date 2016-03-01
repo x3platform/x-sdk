@@ -88,6 +88,7 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
                     Name = FieldHelper.FormatName(table.Columns[i].Name),
                     Type = ConvertType(table.Columns[i].Type),
                     DefaultValue = GetDefaultValue(table.Columns[i].Type),
+                    Description = table.Columns[i].Description
                 });
             }
 

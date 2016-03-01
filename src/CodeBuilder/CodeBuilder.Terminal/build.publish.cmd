@@ -20,6 +20,13 @@ set ConfigurationName=%4
 
 echo Deploy project files - %TargetName%
 
+if not exist "%ProjectDir%App.config" copy "%ProjectDir%App.example.config" "%ProjectDir%App.config" /y
+
+copy "%ProjectDir%App.config" "%TargetDir%%TargetName%.exe.config" /y
+
+if exist "%TargetDir%%TargetName%.dll" copy "%TargetDir%%TargetName%.dll" %BinDir% /y
+if exist "%TargetDir%%TargetName%.pdb" copy "%TargetDir%%TargetName%.pdb" %BinDir% /y
+
 call :CopyTemplateFiles
 
 if %ConfigurationName% == Release call :CopyDistFiles

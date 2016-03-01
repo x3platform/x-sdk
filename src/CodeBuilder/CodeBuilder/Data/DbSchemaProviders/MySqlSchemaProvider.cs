@@ -307,7 +307,9 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 case "smallint": return DbType.Int16;
 
                 case "int": return DbType.Int32;
-                case "float": return DbType.Double;
+
+                case "float":
+                case "double": return DbType.Double;
 
                 case "money":
                 case "decimal": return DbType.Decimal;

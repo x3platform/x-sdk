@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E24040E2-B609-4563-A75A-949F7A5B03DF}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{B87BFA89-6FD2-44B5-8C3B-AE20FA61AE26}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>X3Platform.CodeBuilder.Terminal</RootNamespace>
-    <AssemblyName>cb</AssemblyName>
+    <RootNamespace>X3Platform.CodeBuilder.Templates</RootNamespace>
+    <AssemblyName>X3Platform.CodeBuilder.Templates</AssemblyName>
     <StartupObject>
     </StartupObject>
     <ApplicationIcon>
@@ -57,12 +57,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging">
-      <HintPath>..\..\..\lib\Common.Logging\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\lib\MySQL\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -74,10 +68,8 @@
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="X3Platform.CodeBuilder, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\X3Platform.CodeBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="X3Platform.CodeBuilder.Templates, Version=1.0.3.1001, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\bin\X3Platform.CodeBuilder.Templates.dll</HintPath>
     </Reference>
     <Reference Include="X3Platform.Support">
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Support.dll</HintPath>
@@ -87,15 +79,70 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="CSharp\BusinessLogicService.cs" />
+    <Compile Include="CSharp\AjaxWrapper.cs" />
+    <Compile Include="CSharp\Configuration\ConfigurationView.cs" />
+    <Compile Include="CSharp\DataAccess\IBatisProvider.cs" />
+    <Compile Include="CSharp\DataAccess\IBatisMapping.cs" />
+    <Compile Include="CSharp\NAntBuildFile.cs" />
+    <Compile Include="CSharp\Configuration\Configuration.cs" />
+    <Compile Include="CSharp\CustomPluginContext.cs" />
+    <Compile Include="Javascript\JavascriptGenerator.cs" />
+    <Compile Include="Sql\DataDictionary.cs" />
+    <Compile Include="Sql\SqlScriptGenerator.cs" />
+    <Compile Include="Web\WebGenerator.cs" />
+    <None Include="CSharp\Configuration\ConfigurationView.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\Copyright.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\DataAccess\IBatisProvider.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\DataAccess\IBatisMapping.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\Model.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Compile Include="CSharp\CSharpField.cs" />
+    <Compile Include="CSharp\DataAccess\DataAccessGenerator.cs" />
+    <Compile Include="CSharp\IBusinessLogicService.cs" />
+    <Compile Include="CSharp\IDataAccessProvider.cs" />
+    <Compile Include="ExtJS\ExtJSGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="CSharp\IDataAccessProvider.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\IBusinessLogicService.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\BusinessLogicService.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\AjaxWrapper.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\NAntBuildFile.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\Configuration\Configuration.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CSharp\CustomPluginContext.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Sql\DataDictionary.vm" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.example.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="build.publish.cmd" />
-    <None Include="README.md" />
+    <Compile Include="CSharp\CSharpGenerator.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CSharp\Model.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CSharp\Tests\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -116,7 +163,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)build.publish.cmd $(ProjectDir) $(TargetDir) $(TargetName) $(ConfigurationName)</PostBuildEvent>
+    <PostBuildEvent>$(ProjectDir)build.publish.cmd "$(ProjectDir)" "$(TargetDir)" "$(TargetName)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
