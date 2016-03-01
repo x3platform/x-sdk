@@ -23,6 +23,7 @@
         //-------------------------------------------------------
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetTable()
         {
             SqlServerSchemaProvider provider = new SqlServerSchemaProvider();
@@ -36,6 +37,7 @@
         }
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetPrimaryKeyColumns()
         {
             SqlServerSchemaProvider provider = new SqlServerSchemaProvider();

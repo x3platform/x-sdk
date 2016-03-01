@@ -21,8 +21,8 @@
         //-------------------------------------------------------
         // 测试内容
         //-------------------------------------------------------
-
         [Test]
+        [Category("ManualTesting")]
         public void TestGetTable()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();
@@ -36,6 +36,7 @@
         }
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetPrimaryKeyColumns()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();
@@ -46,6 +47,7 @@
         }
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetForeignKeyColumns()
         {
             MySqlSchemaProvider provider = new MySqlSchemaProvider();

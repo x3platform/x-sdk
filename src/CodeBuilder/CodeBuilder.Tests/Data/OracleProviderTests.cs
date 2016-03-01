@@ -23,6 +23,7 @@
         //-------------------------------------------------------
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetTable()
         {
             OracleSchemaProvider provider = new OracleSchemaProvider();
@@ -36,6 +37,7 @@
         }
 
         [Test]
+        [Category("ManualTesting")]
         public void TestGetPrimaryKeyColumns()
         {
             OracleSchemaProvider provider = new OracleSchemaProvider();
