@@ -84,7 +84,6 @@
     <Compile Include="CSharp\Configuration\ConfigurationView.cs" />
     <Compile Include="CSharp\DataAccess\IBatisProvider.cs" />
     <Compile Include="CSharp\DataAccess\IBatisMapping.cs" />
-    <Compile Include="CSharp\NAntBuildFile.cs" />
     <Compile Include="CSharp\Configuration\Configuration.cs" />
     <Compile Include="CSharp\CustomPluginContext.cs" />
     <Compile Include="Javascript\JavascriptGenerator.cs" />
@@ -122,9 +121,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="CSharp\AjaxWrapper.vm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="CSharp\NAntBuildFile.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="CSharp\Configuration\Configuration.vm">
