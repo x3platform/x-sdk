@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <ItemGroup>
+        <!-- CodeBuilder -->
+        <ProjectToBuild Include="CodeBuilder\CodeBuilder\CodeBuilder.csproj" />
+        <ProjectToBuild Include="CodeBuilder\CodeBuilder.Templates\CodeBuilder.Templates.csproj" />
+        <ProjectToBuild Include="CodeBuilder\CodeBuilder.Terminal\CodeBuilder.Terminal.csproj" />
+        <ProjectToBuild Include="CodeBuilder\CodeBuilder.Tests\CodeBuilder.Tests.csproj" />
+        <!-- DataDump -->
+        <ProjectToBuild Include="DataDump\DataDump\DataDump.csproj" />
+        <ProjectToBuild Include="DataDump\DataDump.Terminal\DataDump.Terminal.csproj" />
+    </ItemGroup>
+    <Target Name="Build">
+        <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;WarningLevel=0" />
+    </Target>
+</Project>
