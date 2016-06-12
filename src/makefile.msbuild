@@ -8,6 +8,9 @@
         <!-- DataDump -->
         <ProjectToBuild Include="DataDump\DataDump\DataDump.csproj" />
         <ProjectToBuild Include="DataDump\DataDump.Terminal\DataDump.Terminal.csproj" />
+        <!-- HttpServer -->
+        <ProjectToBuild Include="HttpServer\HttpServer\HttpServer.csproj" />
+        <ProjectToBuild Include="HttpServer\HttpServer.Terminal\HttpServer.Terminal.csproj" />
     </ItemGroup>
     <Target Name="Build">
         <MSBuild Projects="@(ProjectToBuild)" Properties="Configuration=Release;WarningLevel=0" />
