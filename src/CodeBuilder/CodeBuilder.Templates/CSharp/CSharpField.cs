@@ -18,6 +18,15 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
             set { m_Name = value; }
         }
 
+        private string m_DataColumnName;
+
+        /// <summary>数据列名称</summary>
+        public string DataColumnName
+        {
+            get { return this.m_DataColumnName; }
+            set { this.m_DataColumnName = value; }
+        }
+
         private string m_Type;
         /// <summary>
         /// 数据类型

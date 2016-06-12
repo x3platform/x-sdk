@@ -18,12 +18,12 @@
   <resultMaps>
     <resultMap id="${dataProcedurePrefix}_FindOne_Result" class="${entityClass}">
 #foreach($field in $fields)
-      <result property="${field.Name}" column="${field.Name}" />
+      <result property="${field.Name}" column="${field.DataColumnName}" />
 #end
     </resultMap>
     <resultMap id="${dataProcedurePrefix}_FindAll_Result" class="${entityClass}">
 #foreach($field in $fields)
-      <result property="${field.Name}" column="${field.Name}" />
+      <result property="${field.Name}" column="${field.DataColumnName}" />
 #end
     </resultMap>
   </resultMaps>
@@ -34,9 +34,9 @@
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-        ${field.Name},
+        ${field.DataColumnName},
 #else
-        ${field.Name}
+        ${field.DataColumnName}
 #end
 #set($i = $i+1)
 #end
@@ -60,9 +60,9 @@
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-        ${field.Name} = #${field.Name}#,
+        ${field.DataColumnName} = #${field.Name}#,
 #else
-        ${field.Name} = #${field.Name}#
+        ${field.DataColumnName} = #${field.Name}#
 #end
 #set($i = $i+1)
 #end
@@ -96,6 +96,26 @@
         <isNotEqual prepend="LIMIT" property="Length" compareValue="0">
           0, $Length$
         </isNotEqual>
+      </dynamic>
+    </select>
+    <select id="${dataProcedurePrefix}_FindAll#Oracle" resultMap="${dataProcedurePrefix}_FindAll_Result" >
+      SELECT * FROM ${dataTableName} T
+
+      <dynamic prepend="WHERE">
+        <isParameterPresent>
+          <isNotEmpty prepend="AND" property="WhereClause" >
+            $WhereClause$
+          </isNotEmpty>
+        </isParameterPresent>
+        <isNotEqual prepend="AND" property="Length" compareValue = "0">
+          ROWNUM &lt;= $Length$
+        </isNotEqual>
+      </dynamic>
+      
+      <dynamic prepend="ORDER BY">
+        <isNotEmpty prepend="AND" property="OrderBy" >
+          $OrderBy$
+        </isNotEmpty>
       </dynamic>
     </select>
     <select id="${dataProcedurePrefix}_FindAll#SqlServer" resultMap="${dataProcedurePrefix}_FindAll_Result" >
@@ -141,6 +161,24 @@
       </dynamic>
       
       LIMIT $StartIndex$, $PageSize$
+    </select>
+    <select id="${dataProcedurePrefix}_GetPaging#Oracle"  resultMap="${dataProcedurePrefix}_FindAll_Result" >
+      SELECT T2.* FROM (   
+        SELECT ROWNUM RowIndex, T1.* FROM (   
+          SELECT * FROM ${dataTableName} T
+
+          <dynamic prepend="WHERE">
+            <isParameterPresent>
+              <isNotEmpty prepend="AND" property="WhereClause" >
+                $WhereClause$
+              </isNotEmpty>
+            </isParameterPresent>
+          </dynamic>
+
+          ORDER BY $OrderBy$
+      
+        ) T1 WHERE ROWNUM &lt;= ($StartIndex$ + $PageSize$)
+      ) T2 WHERE T2.RowIndex &gt; $StartIndex$
     </select>
     <select id="${dataProcedurePrefix}_GetPaging#SqlServer" resultMap="${dataProcedurePrefix}_FindAll_Result" >
       SELECT * 

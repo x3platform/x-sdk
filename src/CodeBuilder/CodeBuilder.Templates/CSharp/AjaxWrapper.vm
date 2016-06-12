@@ -20,6 +20,8 @@ namespace ${namespace}
     using X3Platform.Apps;
     using X3Platform.Data;
     using X3Platform.DigitalNumber;
+    using X3Platform.Globalization;
+    using X3Platform.Messages;
     using X3Platform.Util;
 
     using ${namespacePrefix}.IBLL;
@@ -48,7 +50,7 @@ namespace ${namespace}
 
             this.service.Save(param);
 
-            return "{\"message\":{\"returnCode\":0,\"value\":\"保存成功。\"}}";
+            return MessageObject.Stringify("0", I18n.Strings["msg_save_success"]);
         }
         #endregion
 
@@ -62,7 +64,7 @@ namespace ${namespace}
 
             this.service.Delete(id);
 
-            return "{\"message\":{\"returnCode\":0,\"value\":\"删除成功。\"}}";
+            return MessageObject.Stringify("0", I18n.Strings["msg_delete_success"]);
         }
         #endregion
 
@@ -83,8 +85,8 @@ namespace ${namespace}
             ${entityClass} param = this.service.FindOne(id);
 
             outString.Append("{\"data\":" + AjaxUtil.Parse<${entityClass}>(param) + ",");
-
-            outString.Append("\"message\":{\"returnCode\":0,\"value\":\"查询成功。\"}}");
+            
+            outString.Append(MessageObject.Stringify("0", I18n.Strings["msg_query_success"], true) + "}");
 
             return outString.ToString();
         }
@@ -119,8 +121,8 @@ namespace ${namespace}
             IList<${entityClass}> list = this.service.FindAll(query);
 
             outString.Append("{\"data\":" + AjaxUtil.Parse<${entityClass}>(list) + ",");
-
-            outString.Append("\"message\":{\"returnCode\":0,\"value\":\"查询成功。\"}}");
+            
+            outString.Append(MessageObject.Stringify("0", I18n.Strings["msg_query_success"], true) + "}");
 
             return outString.ToString();
         }
@@ -130,11 +132,11 @@ namespace ${namespace}
         // 自定义功能
         // -------------------------------------------------------
 
-        #region 函数:Query(XmlDocument doc)
+        #region 函数:GetPaging(XmlDocument doc)
         /// <summary>获取带分页的列表信息</summary>
         /// <param name="doc">Xml 文档对象</param>
         /// <returns>返回操作结果</returns>
-        public string Query(XmlDocument doc)
+        public string GetPaging(XmlDocument doc)
         {
             StringBuilder outString = new StringBuilder();
             
@@ -157,10 +159,8 @@ namespace ${namespace}
             outString.Append("{\"data\":" + AjaxUtil.Parse<${entityClass}>(list) + ",");
             outString.Append("\"paging\":" + paging + ",");
             outString.Append("\"total\":" + paging.RowCount + ",");
-            outString.Append("\"metaData\":{\"root\":\"data\",\"idProperty\":\"id\",\"totalProperty\":\"total\",\"successProperty\":\"success\",\"messageProperty\": \"message\"},");
-            outString.Append("\"success\":1,");
-            outString.Append("\"msg\":\"success\",");
-            outString.Append("\"message\":{\"returnCode\":0,\"value\":\"查询成功。\"}}");
+            outString.Append(MessageObject.Stringify("0", I18n.Strings["msg_query_success"], true) + ",");
+            outString.Append("\"metaData\":{\"root\":\"data\",\"idProperty\":\"id\",\"totalProperty\":\"total\",\"successProperty\":\"success\",\"messageProperty\": \"message\"}}");
 
             return outString.ToString();
         }
@@ -175,8 +175,8 @@ namespace ${namespace}
             string id = XmlHelper.Fetch("id", doc);
 
             bool result = this.service.IsExist(id);
-
-            return "{\"message\":{\"returnCode\":0,\"value\":\"" + result.ToString().ToLower() + "\"}}";
+            
+            return MessageObject.Stringify("0", result.ToString().ToLower());
         }
         #endregion
 
@@ -197,8 +197,8 @@ namespace ${namespace}
             param.UpdateDate = param.CreateDate = DateTime.Now;
 
             outString.Append("{\"data\":" + AjaxUtil.Parse<${entityClass}>(param) + ",");
-
-            outString.Append("\"message\":{\"returnCode\":0,\"value\":\"创建成功。\"}}");
+            
+            outString.Append(MessageObject.Stringify("0", I18n.Strings["msg_create_success"], true) + "}");
 
             return outString.ToString();
         }

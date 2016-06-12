@@ -1,7 +1,7 @@
 namespace X3Platform.CodeBuilder.Util
 {
     using System.Collections.ObjectModel;
-
+    using System.Text;
     using X3Platform.CodeBuilder.Configuration;
     using X3Platform.Util;
 
@@ -14,7 +14,7 @@ namespace X3Platform.CodeBuilder.Util
         {
             Collection<SpecialWord> list = CodeBuilderConfiguration.Instance.SpecialWords.List;
 
-            name = name.Replace("_", string.Empty);
+            string specialname = name.Replace("_", string.Empty);
 
             foreach (SpecialWord item in list)
             {
@@ -24,7 +24,28 @@ namespace X3Platform.CodeBuilder.Util
                 }
             }
 
-            return StringHelper.ToFirstUpper(name);
+            StringBuilder outString = new StringBuilder();
+
+            char[] chars = name.ToCharArray();
+
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if (chars[i] == 95 && i > 0)
+                {
+                    i++;
+
+                    if (i < chars.Length)
+                    {
+                        outString.Append(chars[i].ToString().ToUpper());
+                    }
+                }
+                else
+                {
+                    outString.Append(chars[i]);
+                }
+            }
+
+            return StringHelper.ToFirstUpper(outString.ToString());
         }
     }
 }
