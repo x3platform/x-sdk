@@ -73,12 +73,6 @@
     <Reference Include="X3Platform.Abstractions">
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="X3Platform.CodeBuilder, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\bin\X3Platform.CodeBuilder.dll</HintPath>
-    </Reference>
-    <Reference Include="X3Platform.CodeBuilder.Templates, Version=1.0.3.1001, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\bin\X3Platform.CodeBuilder.Templates.dll</HintPath>
-    </Reference>
     <Reference Include="X3Platform.DataDump">
       <HintPath>..\..\..\bin\X3Platform.DataDump.dll</HintPath>
     </Reference>
