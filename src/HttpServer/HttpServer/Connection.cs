@@ -109,7 +109,7 @@ namespace X3Platform.HttpServer
             var sb = new StringBuilder();
 
             sb.Append("HTTP/1.1 " + statusCode + " " + HttpWorkerRequest.GetStatusDescription(statusCode) + "\r\n");
-            sb.Append("Server: Cassini/" + Messages.VersionString + "\r\n");
+            sb.Append("Server: X3Platform.HttpServer/" + Messages.VersionString + "\r\n");
             sb.Append("Date: " + DateTime.Now.ToUniversalTime().ToString("R", DateTimeFormatInfo.InvariantInfo) + "\r\n");
             if (contentLength >= 0)
                 sb.Append("Content-Length: " + contentLength + "\r\n");
@@ -132,6 +132,10 @@ namespace X3Platform.HttpServer
 
             switch (extension)
             {
+                case ".txt":
+                    contentType = "text/plain";
+                    break;
+
                 case ".bmp":
                     contentType = "image/bmp";
                     break;
@@ -267,7 +271,7 @@ namespace X3Platform.HttpServer
             }
         }
 
-        public void WriteEntireResponseFromFile(String fileName, bool keepAlive)
+        public void WriteEntireResponseFromFile(string fileName, bool keepAlive)
         {
             if (!File.Exists(fileName))
             {
@@ -284,21 +288,46 @@ namespace X3Platform.HttpServer
             }
 
             bool completed = false;
-            FileStream fs = null;
 
             try
             {
-                fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read);
-                int len = (int)fs.Length;
-                byte[] fileBytes = new byte[len];
-                int bytesRead = fs.Read(fileBytes, 0, len);
+                string extension = Path.GetExtension(fileName);
 
-                String headers = MakeResponseHeaders(200, contentTypeHeader, bytesRead, keepAlive);
-                _socket.Send(Encoding.UTF8.GetBytes(headers));
+                if (".txt".IndexOf(extension) > -1)
+                {
+                    StreamReader reader = new StreamReader(fileName, Encoding.Default);
 
-                _socket.Send(fileBytes, 0, bytesRead, SocketFlags.None);
+                    string content = reader.ReadToEnd();
 
-                completed = true;
+                    byte[] buffer = Encoding.UTF8.GetBytes(content);
+
+                    string headers = MakeResponseHeaders(200, contentTypeHeader, content.Length, keepAlive);
+
+                    _socket.Send(Encoding.UTF8.GetBytes(headers));
+
+                    _socket.Send(buffer);
+
+                    completed = true;
+                }
+                else
+                {
+                    using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    {
+                        int len = (int)fs.Length;
+                        byte[] fileBytes = new byte[len];
+                        int bytesRead = fs.Read(fileBytes, 0, len);
+
+                        String headers = MakeResponseHeaders(200, contentTypeHeader, bytesRead, keepAlive);
+
+                        _socket.Send(Encoding.UTF8.GetBytes(headers));
+
+                        _socket.Send(fileBytes, 0, bytesRead, SocketFlags.None);
+
+                        completed = true;
+
+                        fs.Close();
+                    }
+                }
             }
             catch (SocketException)
             {
@@ -307,9 +336,6 @@ namespace X3Platform.HttpServer
             {
                 if (!keepAlive || !completed)
                     Close();
-
-                if (fs != null)
-                    fs.Close();
             }
         }
 

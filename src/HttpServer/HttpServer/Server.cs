@@ -114,8 +114,10 @@ namespace X3Platform.HttpServer
         static Socket CreateSocketBindAndListen(AddressFamily family, IPAddress address, int port)
         {
             var socket = new Socket(family, SocketType.Stream, ProtocolType.Tcp);
+
             socket.Bind(new IPEndPoint(address, port));
             socket.Listen((int)SocketOptionName.MaxConnections);
+
             return socket;
         }
 
@@ -123,7 +125,8 @@ namespace X3Platform.HttpServer
         {
             try
             {
-                _socket = CreateSocketBindAndListen(AddressFamily.InterNetwork, IPAddress.Loopback, _port);
+                // _socket = CreateSocketBindAndListen(AddressFamily.InterNetwork, IPAddress.Loopback, _port);
+                _socket = CreateSocketBindAndListen(AddressFamily.InterNetwork, IPAddress.Any, _port);
             }
             catch
             {
@@ -142,25 +145,31 @@ namespace X3Platform.HttpServer
                         {
                             if (!_shutdownInProgress)
                             {
-                                var conn = new Connection(this, acceptedSocket);
-
-                                // wait for at least some input
-                                if (conn.WaitForRequestBytes() == 0)
+                                try
                                 {
-                                    conn.WriteErrorAndClose(400);
-                                    return;
-                                }
+                                    var connection = new Connection(this, acceptedSocket);
 
-                                // find or create host
-                                Host host = GetHost();
-                                if (host == null)
+                                    // wait for at least some input
+                                    if (connection.WaitForRequestBytes() == 0)
+                                    {
+                                        connection.WriteErrorAndClose(400);
+                                        return;
+                                    }
+
+                                    // find or create host
+                                    Host host = GetHost();
+                                    if (host == null)
+                                    {
+                                        connection.WriteErrorAndClose(500);
+                                        return;
+                                    }
+                                    // process request in worker app domain
+                                    host.ProcessRequest(connection);
+                                }
+                                catch (Exception ex)
                                 {
-                                    conn.WriteErrorAndClose(500);
-                                    return;
+                                    Console.WriteLine(ex);
                                 }
-
-                                // process request in worker app domain
-                                host.ProcessRequest(conn);
                             }
                         });
                     }

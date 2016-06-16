@@ -45,6 +45,18 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="X3Platform.Abstractions">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="X3Platform.Services">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="X3Platform.Support">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Support.dll</HintPath>
+    </Reference>
+    <Reference Include="X3Platform.Velocity">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Velocity.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteParser.cs" />
@@ -55,6 +67,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Server.cs" />
+    <Compile Include="ServerManagement.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

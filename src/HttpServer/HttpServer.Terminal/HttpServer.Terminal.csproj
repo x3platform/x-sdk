@@ -65,11 +65,23 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="Topshelf">
+      <HintPath>..\..\..\lib\Topshelf\Topshelf.dll</HintPath>
+    </Reference>
+    <Reference Include="Topshelf.Linux">
+      <HintPath>..\..\..\lib\Topshelf\Topshelf.Linux.dll</HintPath>
+    </Reference>
     <Reference Include="X3Platform.Abstractions">
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="X3Platform.Services">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Services.dll</HintPath>
+    </Reference>
     <Reference Include="X3Platform.Support">
       <HintPath>..\..\..\lib\X3Platform\X3Platform.Support.dll</HintPath>
+    </Reference>
+    <Reference Include="X3Platform.Velocity">
+      <HintPath>..\..\..\lib\X3Platform\X3Platform.Velocity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.example.config" />
+    <None Include="config\X3Platform.Services.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
