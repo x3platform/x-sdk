@@ -84,7 +84,10 @@ namespace X3Platform.HttpServer.Terminal
 
             foreach (Process backgroundProcess in backgroundProcesses)
             {
-                backgroundProcess.Kill();
+                if (!backgroundProcess.HasExited)
+                {
+                    backgroundProcess.Close();
+                }
             }
 
             backgroundProcesses.Clear();
