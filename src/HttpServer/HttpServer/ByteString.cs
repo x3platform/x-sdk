@@ -17,6 +17,7 @@ using System.Text;
 namespace X3Platform.HttpServer
 {
     class ByteString {
+
         byte[] _bytes;
         int _offset;
         int _length;

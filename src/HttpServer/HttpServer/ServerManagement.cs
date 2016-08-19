@@ -44,6 +44,10 @@ namespace X3Platform.HttpServer.Terminal
             {
                 this.physicalPath = KernelConfigurationView.Instance.ApplicationPathRoot;
             }
+            else
+            {
+                this.physicalPath = System.IO.Path.GetFullPath(this.physicalPath);
+            }
         }
 
         public void Start()
