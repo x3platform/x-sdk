@@ -56,10 +56,10 @@ namespace X3Platform.DataDump
                 //help.AddPreOptionsLine("用于系统的人员及权限的日常维护管理.\r\n");
 
                 help.AddPreOptionsLine("Usage:");
-                help.AddPreOptionsLine(string.Format("  {0} --applicationName News", program.Name));
-                help.AddPreOptionsLine(string.Format("  {0} --applicationName News --silent", program.Name));
-                help.AddPreOptionsLine(string.Format("  {0} --applicationName News --outputFile \"06.新闻管理_应用默认配置初始化脚本(yyyy-MM-dd).sql\" ", program.Name));
-                help.AddPreOptionsLine(string.Format("  {0} --applicationName News --outputFile \"C:\\06.新闻管理_应用默认配置初始化脚本(yyyy-MM-dd).sql\" --silent", program.Name));
+                help.AddPreOptionsLine(string.Format("  {0} --application News", program.Name));
+                help.AddPreOptionsLine(string.Format("  {0} --application News --silent", program.Name));
+                help.AddPreOptionsLine(string.Format("  {0} --application News --output \"06.新闻管理_应用默认配置初始化脚本(yyyy-MM-dd).sql\" ", program.Name));
+                help.AddPreOptionsLine(string.Format("  {0} --application News --output \"C:\\06.新闻管理_应用默认配置初始化脚本(yyyy-MM-dd).sql\" --silent", program.Name));
 
                 help.AddPreOptionsLine(string.Format("  {0} --help", program.Name));
                 help.AddOptions(this);

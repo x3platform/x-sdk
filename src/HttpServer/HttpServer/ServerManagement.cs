@@ -44,6 +44,10 @@ namespace X3Platform.HttpServer.Terminal
             {
                 this.physicalPath = KernelConfigurationView.Instance.ApplicationPathRoot;
             }
+            else
+            {
+                this.physicalPath = System.IO.Path.GetFullPath(this.physicalPath);
+            }
         }
 
         public void Start()
@@ -84,7 +88,10 @@ namespace X3Platform.HttpServer.Terminal
 
             foreach (Process backgroundProcess in backgroundProcesses)
             {
-                backgroundProcess.Kill();
+                if (!backgroundProcess.HasExited)
+                {
+                    backgroundProcess.Close();
+                }
             }
 
             backgroundProcesses.Clear();

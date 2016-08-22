@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Hosting;
+using X3Platform.Util;
 
 namespace X3Platform.HttpServer
 {
@@ -295,19 +296,28 @@ namespace X3Platform.HttpServer
 
                 if (".txt".IndexOf(extension) > -1)
                 {
-                    StreamReader reader = new StreamReader(fileName, Encoding.Default);
+                    string destFileName = fileName + ".tmp";
 
-                    string content = reader.ReadToEnd();
+                    FileHelper.Copy(fileName, destFileName);
 
-                    byte[] buffer = Encoding.UTF8.GetBytes(content);
+                    using (StreamReader reader = new StreamReader(destFileName, Encoding.Default))
+                    {
+                        string content = reader.ReadToEnd();
 
-                    string headers = MakeResponseHeaders(200, contentTypeHeader, content.Length, keepAlive);
+                        byte[] buffer = Encoding.UTF8.GetBytes(content);
 
-                    _socket.Send(Encoding.UTF8.GetBytes(headers));
+                        string headers = MakeResponseHeaders(200, contentTypeHeader, content.Length, keepAlive);
 
-                    _socket.Send(buffer);
+                        _socket.Send(Encoding.UTF8.GetBytes(headers));
 
-                    completed = true;
+                        _socket.Send(buffer);
+
+                        reader.Close();
+
+                        completed = true;
+                    }
+
+                    FileHelper.Delete(destFileName);
                 }
                 else
                 {
