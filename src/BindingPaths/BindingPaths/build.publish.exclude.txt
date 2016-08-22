@@ -1,0 +1,8 @@
+\bin\
+\obj\
+.cs
+.config
+.bat
+.db
+.jpg
+.aspx
