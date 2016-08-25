@@ -12,6 +12,8 @@ namespace X3Platform.BindingPaths
         {
             try
             {
+                StringBuilder outString = new StringBuilder();
+
                 string keyPath = @"SYSTEM\ControlSet001\Control\Session Manager\Environment";
                 string keyName = "Path";
 
@@ -26,6 +28,10 @@ namespace X3Platform.BindingPaths
 
                 var path = value;
 
+                outString.AppendLine("Date:" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                outString.AppendLine("Original PATH:" + path);
+                outString.AppendLine();
+
                 for (var i = 0; i < nameValues.Count; i++)
                 {
                     var temp = nameValues[i];
@@ -37,18 +43,23 @@ namespace X3Platform.BindingPaths
                     if (Directory.Exists(temp) && path.IndexOf(temp) == -1)
                     {
                         path += ";" + temp;
+                        outString.AppendLine(temp + " bingding.");
                     }
                     else if (path.IndexOf(temp) > -1)
                     {
+                        outString.AppendLine(temp + " exists.");
                         // Console.WriteLine(temp + " exists.");
                     }
                     else
                     {
-                        Console.WriteLine(temp + " not found.");
+                        outString.AppendLine(temp + " not found.");
+                        // Console.WriteLine(temp + " not found.");
                     }
                 }
 
-                Console.WriteLine("Path:{0}", path);
+                outString.AppendLine("Current PATH:" + path);
+
+                Console.WriteLine("Current PATH:{0}", path);
 
                 if (path != value)
                 {
@@ -56,8 +67,12 @@ namespace X3Platform.BindingPaths
                     objItem = obj.OpenSubKey(keyPath, true);
                     objItem.SetValue(keyName, path);
 
-                    Console.WriteLine("save success.");
+                    outString.AppendLine("Save PATH success.");
+
+                    Console.WriteLine("Save PATH success.");
                 }
+
+                File.WriteAllText("binding-paths.log", outString.ToString());
             }
             catch (Exception ex)
             {
