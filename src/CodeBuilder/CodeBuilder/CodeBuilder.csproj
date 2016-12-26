@@ -87,6 +87,7 @@
     <Compile Include="Data\DatabaseSchema.cs" />
     <Compile Include="Data\DataColumnSchema.cs" />
     <Compile Include="Data\DataTableSchema.cs" />
+    <Compile Include="Data\DbSchemaProviders\SQLiteSchemaProvider.cs" />
     <Compile Include="Data\IDbSchemaProvider.cs" />
     <Compile Include="Data\DataColumnSchemaCollection.cs" />
     <Compile Include="Data\DbSchemaProviders\MySqlSchemaProvider.cs" />
