@@ -4,10 +4,10 @@ using System.Data;
 using System.Text;
 using X3Platform.CodeBuilder.Data;
 
-namespace X3Platform.CodeBuilder.Templates.CSharp
+namespace X3Platform.CodeBuilder.Templates.Python
 {
     /// <summary>×Ö¶ÎÐÅÏ¢</summary>
-    public class CSharpField
+    public class PythonField
     {
         private string m_Name;
 

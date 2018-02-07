@@ -1,20 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-using X3Platform.CodeBuilder.Template;
-using X3Platform.CodeBuilder.Data;
-using X3Platform.CodeBuilder.Util;
-using X3Platform.Velocity;
-
-namespace X3Platform.CodeBuilder.Templates.CSharp
+namespace X3Platform.CodeBuilder.Templates.Python
 {
-    /// <summary>C# 代码生成器</summary>
-    public abstract class CSharpGenerator : TemplateGenerator
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+    using Data;
+    using Util;
+    using X3Platform.CodeBuilder.Template;
+    using X3Platform.Util;
+
+    public abstract class PythonGenerator : TemplateGenerator
     {
         #region 属性:FileName
         private string m_FileName;
-        /// <summary>文件名称</summary>
+        /// <summary>
+        /// 文件名称
+        /// </summary>
         public string FileName
         {
             get { return m_FileName; }
@@ -22,22 +23,24 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         }
         #endregion
 
-        #region 属性:Namespace
-        private string m_Namespace;
+        #region 属性:Directory
+        private string m_Directory;
         /// <summary>
         /// 名称空间
         /// </summary>
-        public string Namespace
+        public string Directory
         {
-            get { return m_Namespace; }
-            set { m_Namespace = value; }
+            get { return m_Directory; }
+            set { m_Directory = value; }
         }
         #endregion
 
         protected StringBuilder buffer = new StringBuilder();
 
-        /// <summary>构造函数</summary>
-        public CSharpGenerator()
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public PythonGenerator()
         {
             this.Generate += new GenerateHandler(this.GenerateCode);
         }
@@ -60,32 +63,37 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         #endregion
 
         #region 函数:PrintCopyright()
-        /// <summary>输出版权信息</summary>
-        /// <returns>版权信息</returns>
+        /// <summary>
+        /// 生成描述信息
+        /// </summary>
+        /// <returns>描述信息</returns>
         protected virtual string PrintCopyright()
         {
-            VelocityContext context = new VelocityContext();
+            StringBuilder outString = new StringBuilder();
 
-            context.Put("year", DateTime.Now.Year);
-            context.Put("author", this.Author);
-            context.Put("fileName", this.FileName);
-            context.Put("description", this.Description);
-            context.Put("date", this.Date);
+            string path = ((string)(Directory + FileName)).ToLower();
 
-            return VelocityManager.Instance.ParseTemplateVirtualPath(context, "templates/CSharp/Copyright.vm");
+            // outString.AppendLine("//========================================================");
+            // outString.AppendLine("//");
+            // outString.AppendLine("// Default Description.");
+            // outString.AppendLine("//");
+            // outString.AppendLine("//========================================================");
+
+            return outString.ToString();
         }
         #endregion
 
+
         #region 函数:GetFields(DataTableSchema table)
-        public IList<CSharpField> GetFields(DataTableSchema table)
+        public IList<PythonField> GetFields(DataTableSchema table)
         {
-            IList<CSharpField> list = new List<CSharpField>();
+            IList<PythonField> list = new List<PythonField>();
 
             for (int i = 0; i < table.Columns.Count; i++)
             {
-                list.Add(new CSharpField
+                list.Add(new PythonField
                 {
-                    Name = FieldHelper.FormatName(table.Columns[i].Name),
+                    Name = StringHelper.ToFirstLower(FieldHelper.FormatName(table.Columns[i].Name)),
                     DataColumnName = table.Columns[i].Name,
                     Type = ConvertType(table.Columns[i].Type),
                     Length = table.Columns[i].Length,
@@ -109,25 +117,25 @@ namespace X3Platform.CodeBuilder.Templates.CSharp
         {
             switch (type)
             {
-                case DbType.AnsiString: return "string";
-                case DbType.AnsiStringFixedLength: return "string";
+                case DbType.AnsiString: return "String";
+                case DbType.AnsiStringFixedLength: return "String";
                 case DbType.Binary: return "byte[]";
-                case DbType.Boolean: return "bool";
+                case DbType.Boolean: return "Boolean";
                 case DbType.Byte: return "int";
                 case DbType.Currency: return "decimal";
-                case DbType.Date: return "DateTime";
+                case DbType.Date: return "Date";
                 case DbType.DateTime: return "DateTime";
                 case DbType.Decimal: return "decimal";
                 case DbType.Double: return "double";
                 case DbType.Guid: return "Guid";
                 case DbType.Int16: return "short";
-                case DbType.Int32: return "int";
+                case DbType.Int32: return "Integer";
                 case DbType.Int64: return "long";
                 case DbType.Object: return "object";
                 case DbType.SByte: return "sbyte";
                 case DbType.Single: return "float";
-                case DbType.String: return "string";
-                case DbType.StringFixedLength: return "string";
+                case DbType.String: return "String";
+                case DbType.StringFixedLength: return "String";
                 case DbType.Time: return "TimeSpan";
                 case DbType.UInt16: return "ushort";
                 case DbType.UInt32: return "uint";

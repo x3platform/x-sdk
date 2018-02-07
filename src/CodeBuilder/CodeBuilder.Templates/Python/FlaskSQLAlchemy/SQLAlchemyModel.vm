@@ -1,0 +1,31 @@
+## 实体类生成模板
+##
+## 可选参数:
+## - ${className}
+## - ${fields}
+# -*- coding:utf8 -*-
+# !/usr/bin/python
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+class ${className}(db.Model):
+    
+#foreach($field in $fields)
+#if( ${field.Description.Length} > 0)
+    """ ${field.Description} """
+#end
+#if( ${field.name} == "id" )
+    ${field.Name} = db.Column(db.${field.Type}, primary_key=True)
+#else
+#if( ${field.Type} == "BigInteger" || ${field.Type} == "Integer" )
+    ${field.Name} = db.Column(db.${field.Type}, nullable=${field.Nullable})
+#else
+#if( ${field.Length} > 0)
+    ${field.Name} = db.Column(db.${field.Type}(${field.Length}), nullable=${field.Nullable})
+#else
+    ${field.Name} = db.Column(db.${field.Type}, nullable=${field.Nullable})
+#end
+#end
+#end
+#end

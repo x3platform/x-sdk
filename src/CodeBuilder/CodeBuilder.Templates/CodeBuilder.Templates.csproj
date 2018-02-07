@@ -87,6 +87,11 @@
     <Compile Include="CSharp\Configuration\Configuration.cs" />
     <Compile Include="CSharp\CustomPluginContext.cs" />
     <Compile Include="Javascript\JavascriptGenerator.cs" />
+    <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.cs" />
+    <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyService.cs" />
+    <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyWebApi.cs" />
+    <Compile Include="Python\PythonField.cs" />
+    <Compile Include="Python\PythonGenerator.cs" />
     <Compile Include="Sql\DataDictionary.cs" />
     <Compile Include="Sql\SqlScriptGenerator.cs" />
     <Compile Include="Web\WebGenerator.cs" />
@@ -127,6 +132,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="CSharp\CustomPluginContext.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Python\FlaskSQLAlchemy\SQLAlchemyService.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Python\FlaskSQLAlchemy\SQLAlchemyWebApi.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Sql\DataDictionary.vm" />

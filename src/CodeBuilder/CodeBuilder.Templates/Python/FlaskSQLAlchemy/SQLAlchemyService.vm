@@ -1,0 +1,83 @@
+## 实体类生成模板
+##
+## 可选参数:
+## - ${className}
+## - ${fields}
+# -*- coding:utf8 -*-
+# !/usr/bin/python
+import sqlalchemy
+
+from ${entityModuleName} import ${entityClass} as model, db
+
+class ${className}:
+    query = model.query
+
+    @staticmethod
+    def insert(args):
+        """
+        create a meeting room reservation
+        :param args: passed in arguments of reservation details
+        :return: code and message
+        """
+        
+        param = model()
+
+        # 复制属性信息
+        copyProps(param, args)
+
+        db.session.add(param)
+        db.session.commit()
+        
+        return 0, u"Success"
+
+    @staticmethod
+    def update(rsv, args):
+        """
+        modify a meeting room reservation record
+        :param rsv: instance of Reservation model
+        :param args: passed in arguments of reservation details
+        :return: status and message
+        """
+
+        param = query.filter_by(mrId=args.mrId).all()
+        
+        # 复制属性信息
+        copyProps(param, args)
+
+        db.session.commit()
+
+        return 0, u"Success"
+        
+    @staticmethod
+    def delete(id):
+        param = model.query.filter_by(id=id).first()
+        if param is None:
+            return False, 'object #' + str(id) + ' not found'
+        db.session.delete(param)
+        db.session.commit()
+
+        return True, u"Success"
+
+    @staticmethod
+    def findAll():
+        return query.order_by(Reservation.id.desc()).all()
+
+    @staticmethod
+    def getPaging(args):
+        """获取会议安排列表信息"""
+        filters = ''
+        if args.subject is not None and len(args.subject) > 0:
+            filters = sqlalchemy.and_(filters, Reservation.subject.like("%" + args.subject + "%"))
+
+        if args.roomId is not None and len(args.roomId) > 0:
+            filters = sqlalchemy.and_(filters, Reservation.mrId == args.roomId)
+
+        if args.beginDate is not None and len(args.beginDate) > 0:
+            filters = sqlalchemy.and_(filters, args.beginDate  <= Reservation.begin)
+
+        if args.endDate is not None and len(args.endDate) > 0:
+            filters = sqlalchemy.and_(filters, args.endDate  >= Reservation.end )
+
+        list = query.filter(filters).order_by(
+            Reservation.id.desc()).all()
+        return list

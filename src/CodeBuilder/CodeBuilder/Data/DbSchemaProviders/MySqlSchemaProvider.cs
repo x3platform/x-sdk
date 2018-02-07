@@ -187,6 +187,8 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 item.Name = row["Field"].ToString();
                 // 数据类型
                 item.Type = SetDataType(row["Type"].ToString());
+                // 长度
+                item.Length = SetDataLength(item.Type, row["Type"].ToString());
                 // 原生数据类型
                 item.NativeType = row["Type"].ToString();
                 // 是否允许为空
@@ -321,6 +323,26 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 default:
                     throw new Exception("设置数据类型失败,可能是未知的新数据类型" + type + "!");
             }
+        }
+
+        public int SetDataLength(DbType dbType, string type)
+        {
+            if (dbType == DbType.Date || dbType == DbType.DateTime) { return 0; }
+
+            int length = 0;
+
+            string actualType = type.ToLower();
+
+            int index = actualType.IndexOf('(');
+
+            if (index > -1)
+            {
+                string temp = actualType.Substring(index + 1, actualType.Length - index - 2);
+
+                length = Convert.ToInt32(temp);
+            }
+
+            return length;
         }
 
         public string GetDataType(Type type)

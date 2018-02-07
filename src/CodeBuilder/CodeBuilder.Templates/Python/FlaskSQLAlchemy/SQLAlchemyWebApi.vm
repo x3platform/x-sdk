@@ -1,0 +1,71 @@
+## 实体类生成模板
+##
+## 可选参数:
+## - ${className}
+## - ${fields}
+# -*- coding:utf8 -*-
+# !/usr/bin/python
+""" 
+"""
+import sys
+import config
+import jwt
+import x
+
+from flask import Response, json, request
+from flask_restful import Resource, reqparse
+from log import logger
+from ${serviceModuleName} import ${serviceClass} as service
+
+
+requestParser = reqparse.RequestParser()
+requestParser.add_argument('title', type=unicode)
+requestParser.add_argument('content', type=unicode)
+requestParser.add_argument('department', type=unicode)
+
+class ${className}(Resource):
+    
+    def __init__(self):
+        self.res = Response(status=200)
+        self.res.content_type = 'application/json; charset=utf-8'
+        self.service = service()
+        super(${className}, self).__init__()
+
+    def get(self):
+        sceneParser = reqparse.RequestParser()
+        parser.add_argument('scene')
+
+        args = requestParser.parse_args()
+        
+        if(args.scene)
+        {
+        }
+
+        code, message = self.service.findAll(args)
+        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+
+        return self.res
+
+    def post(self):
+        args = requestParser.parse_args()
+
+        code, message = self.service.save(args)
+        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+
+        return self.res
+
+    def put(self, id):
+        args = requestParser.parse_args()
+
+        code, message = self.service.save(args)
+        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+
+        return self.res
+
+    def delete(self, id):
+        """ 删除对象 """
+
+        code, message = self.service.delete(id=id)
+        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+
+        return self.res
