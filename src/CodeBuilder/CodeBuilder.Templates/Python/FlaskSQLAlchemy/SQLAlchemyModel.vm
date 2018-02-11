@@ -3,14 +3,15 @@
 ## 可选参数:
 ## - ${className}
 ## - ${fields}
-# -*- coding:utf8 -*-
+# coding:utf8
 # !/usr/bin/python
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
 class ${className}(db.Model):
-    
+    __tablename__ = '${fields}'
+
 #foreach($field in $fields)
 #if( ${field.Description.Length} > 0)
     """ ${field.Description} """

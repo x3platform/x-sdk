@@ -23,6 +23,18 @@ namespace X3Platform.CodeBuilder.Templates.Python.FlaskSQLAlchemy
         }
         #endregion
 
+        #region 属性:DataTableName
+        private string m_DataTableName;
+        /// <summary>
+        /// 数据表名称
+        /// </summary>
+        public string DataTableName
+        {
+            get { return m_DataTableName; }
+            set { m_DataTableName = value; }
+        }
+        #endregion
+        
         /// <summary>列信息</summary>
         protected IList<PythonField> fields;
 
@@ -37,6 +49,8 @@ namespace X3Platform.CodeBuilder.Templates.Python.FlaskSQLAlchemy
 
             // 实体类名称
             this.ClassName = configuration.Tasks[taskName].Properties["ClassName"].Value;
+            // 数据表名称
+            this.DataTableName = configuration.Tasks[taskName].Properties["DataTable"].Value;
 
             // 设置 table 信息
             IDbSchemaProvider provider = (IDbSchemaProvider)Assembly.Load(configuration.DatabaseProvider.Assembly).CreateInstance(configuration.DatabaseProvider.ClassName,
@@ -82,6 +96,7 @@ namespace X3Platform.CodeBuilder.Templates.Python.FlaskSQLAlchemy
             VelocityContext context = new VelocityContext();
 
             context.Put("className", this.ClassName);
+            context.Put("dataTableName", this.DataTableName);
             context.Put("fields", this.fields);
 
             return VelocityManager.Instance.ParseTemplateVirtualPath(context,

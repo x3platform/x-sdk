@@ -114,7 +114,8 @@ namespace X3Platform.CodeBuilder.Templates.Python.FlaskSQLAlchemy
             context.Put("className", this.ClassName);
             context.Put("serviceModuleName", this.ServiceModuleName);
             context.Put("serviceClass", this.ServiceClass);
-            
+            context.Put("fields", this.fields);
+
             return VelocityManager.Instance.ParseTemplateVirtualPath(context,
                 X3Platform.Util.StringHelper.NullOrEmptyTo(TemplateFile, "templates/Python/FlaskSQLAlchemy/SQLAlchemyWebApi.vm"));
         }

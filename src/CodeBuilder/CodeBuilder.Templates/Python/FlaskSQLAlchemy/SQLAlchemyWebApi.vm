@@ -3,62 +3,56 @@
 ## 可选参数:
 ## - ${className}
 ## - ${fields}
-# -*- coding:utf8 -*-
+# coding:utf8
 # !/usr/bin/python
 """ 
+${className}API File
 """
-import sys
-import config
-import jwt
-import x
-
+from app_logging import logger
 from flask import Response, json, request
 from flask_restful import Resource, reqparse
-from log import logger
 from ${serviceModuleName} import ${serviceClass} as service
 
 
 requestParser = reqparse.RequestParser()
-requestParser.add_argument('title', type=unicode)
-requestParser.add_argument('content', type=unicode)
-requestParser.add_argument('department', type=unicode)
+#foreach($field in $fields)
+#if( ${field.Type} == "String" )
+requestParser.add_argument('${field.Name}', type=unicode)
+#else
+requestParser.add_argument('${field.Name}')
+#end
+#end
 
-class ${className}(Resource):
+class ${className}API(Resource):
     
     def __init__(self):
         self.res = Response(status=200)
         self.res.content_type = 'application/json; charset=utf-8'
         self.service = service()
-        super(${className}, self).__init__()
 
-    def get(self):
-        sceneParser = reqparse.RequestParser()
-        parser.add_argument('scene')
-
-        args = requestParser.parse_args()
+    def get(self,id):
+        """ 查询对象 """
         
-        if(args.scene)
-        {
-        }
-
-        code, message = self.service.findAll(args)
-        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+        code, message, data = self.service.findOne(id)
+        self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
 
         return self.res
 
     def post(self):
+        """ 保存对象 """
         args = requestParser.parse_args()
 
         code, message = self.service.save(args)
-        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+        self.res.data = json.dumps({'code':code, 'message':message}, ensure_ascii=False)
 
         return self.res
 
     def put(self, id):
+        """ 更新对象 """
         args = requestParser.parse_args()
 
         code, message = self.service.save(args)
-        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+        self.res.data = json.dumps({'code':code, 'message':message}, ensure_ascii=False)
 
         return self.res
 
@@ -66,6 +60,39 @@ class ${className}(Resource):
         """ 删除对象 """
 
         code, message = self.service.delete(id=id)
-        self.res.data = json.dumps({code:code, message:message}, ensure_ascii=False, sort_keys=False)
+        self.res.data = json.dumps({'code':code, 'message':message}, ensure_ascii=False)
+
+        return self.res
+
+
+class ${className}QueryAPI(Resource):
+    
+    def __init__(self):
+        self.res = Response(status=200)
+        self.res.content_type = 'application/json; charset=utf-8'
+        self.service = service()
+
+    def post(self):
+        """ 查询 """
+        parser = reqparse.RequestParser()
+        parser.add_argument('scene')
+
+        args = requestParser.parse_args()
+
+        if args.scene == 'query'：
+            # getPaging 查询列表记录
+            parser = reqparse.RequestParser()
+            parser.add_argument('name')
+        
+            code, message, data = self.service.findAll(args)
+            self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
+
+        elif args.scene == 'findAll'：
+            # findAll 查询列表记录
+            parser = reqparse.RequestParser()
+            parser.add_argument('name')
+        
+            code, message, data = self.service.findAll(args)
+            self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
 
         return self.res

@@ -3,18 +3,21 @@
 ## 可选参数:
 ## - ${className}
 ## - ${fields}
-# -*- coding:utf8 -*-
+# coding:utf8
 # !/usr/bin/python
 import sqlalchemy
 
 from ${entityModuleName} import ${entityClass} as model, db
 
 class ${className}:
-    query = model.query
+    def __init__(self):
+        """ 初始化函数 """
+        self.query = model.query
+    
 
     @staticmethod
     def insert(args):
-        """
+        """ """
         create a meeting room reservation
         :param args: passed in arguments of reservation details
         :return: code and message
@@ -32,7 +35,7 @@ class ${className}:
 
     @staticmethod
     def update(rsv, args):
-        """
+        """  """
         modify a meeting room reservation record
         :param rsv: instance of Reservation model
         :param args: passed in arguments of reservation details
@@ -50,6 +53,7 @@ class ${className}:
         
     @staticmethod
     def delete(id):
+        """  """
         param = model.query.filter_by(id=id).first()
         if param is None:
             return False, 'object #' + str(id) + ' not found'
@@ -57,9 +61,15 @@ class ${className}:
         db.session.commit()
 
         return True, u"Success"
+        
+    @staticmethod
+    def findOne(id):
+        """  """
+        return query.filter_by(id=rsv_id).first()
 
     @staticmethod
     def findAll():
+        """  """
         return query.order_by(Reservation.id.desc()).all()
 
     @staticmethod
