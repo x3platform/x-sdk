@@ -34,7 +34,7 @@ class ${className}API(Resource):
         """ 查询对象 """
         
         code, message, data = self.service.findOne(id)
-        self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
+        self.res.data = json.dumps({'code':code, 'message':message, 'data':entity_to_dict(data)}, ensure_ascii=False)
 
         return self.res
 

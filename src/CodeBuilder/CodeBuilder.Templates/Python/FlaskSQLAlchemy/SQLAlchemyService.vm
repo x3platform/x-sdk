@@ -9,85 +9,95 @@ import sqlalchemy
 
 from ${entityModuleName} import ${entityClass} as model, db
 
+from ...util.sqlalchemy_helper import set_entity_props
+
 class ${className}:
     def __init__(self):
         """ 初始化函数 """
         self.query = model.query
     
-
-    @staticmethod
-    def insert(args):
-        """ """
-        create a meeting room reservation
-        :param args: passed in arguments of reservation details
-        :return: code and message
+    def save(self, args):
         """
-        
-        param = model()
-
-        # 复制属性信息
-        copyProps(param, args)
-
-        db.session.add(param)
-        db.session.commit()
-        
-        return 0, u"Success"
-
-    @staticmethod
-    def update(rsv, args):
-        """  """
-        modify a meeting room reservation record
-        :param rsv: instance of Reservation model
-        :param args: passed in arguments of reservation details
-        :return: status and message
+        保存对象
+        :entity args: 参数信息
+        :return: 错误码
         """
 
-        param = query.filter_by(mrId=args.mrId).all()
-        
-        # 复制属性信息
-        copyProps(param, args)
+        entity = self.query.filter_by(id=args.id).first()
 
+        if entity is None:
+            return self.insert(args)
+        else:
+            return self.update(args)
+
+    def insert(self, args):
+        """
+        新建对象
+        :entity args: 参数信息
+        :return: 错误码
+        """
+
+        entity = model()
+
+        # 设置对象属性信息
+        set_entity_props(entity, args)
+
+        db.session.add(entity)
         db.session.commit()
 
         return 0, u"Success"
         
-    @staticmethod
-    def delete(id):
-        """  """
-        param = model.query.filter_by(id=id).first()
-        if param is None:
-            return False, 'object #' + str(id) + ' not found'
-        db.session.delete(param)
+    def update(self, args):
+        """
+        更新对象
+        :entity args: 参数信息
+        :return: 错误码
+        """
+
+        entity = self.query.filter_by(id=args.id).first()
+
+        # 设置对象属性信息
+        set_entity_props(entity, args)
+
+        db.session.merge(entity)
         db.session.commit()
 
-        return True, u"Success"
-        
-    @staticmethod
-    def findOne(id):
-        """  """
-        return query.filter_by(id=rsv_id).first()
+        return 0, u"Success"
 
-    @staticmethod
-    def findAll():
-        """  """
-        return query.order_by(Reservation.id.desc()).all()
+    def delete(self, id):
+        """ 删除对象 """
 
-    @staticmethod
-    def getPaging(args):
-        """获取会议安排列表信息"""
+        entity = self.query.filter_by(id=id).first()
+
+        if entity is None:
+            return 1, 'object #' + str(id) + ' not found'
+
+        db.session.delete(entity)
+        db.session.commit()
+
+        return 0, u"Success"
+
+    def findOne(self, id):
+        """ 查询某条信息 """
+
+        entity = self.query.filter_by(id=id).first()
+
+        return 0, u"Success", entity
+ 
+    def findAll(self):
+        """ 查询列表信息 """
+
+        return self.query.order_by(model.id.desc()).all()
+
+    def getPaging(self, args):
+        """分页查询列表信息"""
+
         filters = ''
-        if args.subject is not None and len(args.subject) > 0:
-            filters = sqlalchemy.and_(filters, Reservation.subject.like("%" + args.subject + "%"))
+        
+        if args.id is not None and len(args.id) > 0:
+            filters = sqlalchemy.and_(filters, args.id == model.id)
 
-        if args.roomId is not None and len(args.roomId) > 0:
-            filters = sqlalchemy.and_(filters, Reservation.mrId == args.roomId)
+        if args.name is not None and len(args.name) > 0:
+            filters = sqlalchemy.and_(filters, model.name.like("%" + args.name + "%"))
 
-        if args.beginDate is not None and len(args.beginDate) > 0:
-            filters = sqlalchemy.and_(filters, args.beginDate  <= Reservation.begin)
-
-        if args.endDate is not None and len(args.endDate) > 0:
-            filters = sqlalchemy.and_(filters, args.endDate  >= Reservation.end )
-
-        list = query.filter(filters).order_by(
-            Reservation.id.desc()).all()
-        return list
+        return self.query.filter(filters).order_by(model.id.desc()).all()
