@@ -1,0 +1,107 @@
+## 业务服务实现类生成模板
+##
+## 参数:
+## - ${package}
+## - ${interfaceName}
+## - ${entityClassPackage}
+## - ${entityClass}
+## - ${businessLogicInterfacePackage}
+## - ${businessLogicInterface}
+## - ${dataAccessInterfacePackage}
+## - ${dataAccessInterface}
+package ${package};
+
+import ${entityClassPackage}.*;
+import ${businessLogicInterfacePackage}.*;
+import ${dataAccessInterfacePackage}.*;
+
+import com.x3platform.data.*;
+import com.x3platform.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.*;
+
+/**
+ */
+public class ${className} implements ${businessLogicInterface}
+{
+    /**
+   * 数据提供器
+   */
+  @Autowired
+  private ${dataAccessInterface} provider = null;
+
+  // -------------------------------------------------------
+  // 保存 删除
+  // -------------------------------------------------------
+  
+  /**
+   * 保存记录
+   *
+   * @param entity 实例 ${entityClass} 详细信息
+   * @return 实例 ${entityClass} 详细信息
+   */
+  @Override
+  public final int save(${entityClass} entity) {
+    if (!this.provider.isExist(entity.getId())) {
+      return this.provider.insert(entity);
+    } else {
+      return this.provider.updateByPrimaryKeySelective(entity);
+    }
+    return 0;
+  }
+  
+  /**
+   * 删除记录
+   *
+   * @param id 实例的标识
+   */
+  @Override
+  public final int delete(String id) {
+    this.provider.deleteByPrimaryKey(id);
+    return 0;
+  }
+
+  // -------------------------------------------------------
+  // 查询
+  // -------------------------------------------------------
+
+  /**
+   * 查询某条记录
+   *
+   * @param id 标识
+   * @return 返回实例 ${entityClass} 的详细信息
+   */
+  @Override
+  public ${entityClass} findOne(String id) {
+      return this.provider.selectByPrimaryKey(id) ;
+  }
+  
+  /**
+   * 查询所有相关记录
+   *
+   * @param query 数据查询参数
+   * @return 返回所有实例 ${entityClass} 的详细信息
+   */
+  @Override
+  public List<${entityClass}> findAll(DataQuery query)
+  {
+      return this.provider.findAll(query.getMap());
+  }
+
+  // -------------------------------------------------------
+  // 自定义功能
+  // -------------------------------------------------------
+   
+  /**
+   * 查询是否存在相关的记录
+   *
+   * @param id 标识
+   * @return 布尔值
+   */
+  @Override
+  public final boolean isExist(String id) {
+    return this.provider.isExist(id);
+  }
+}

@@ -87,11 +87,22 @@
     <Compile Include="CSharp\Configuration\Configuration.cs" />
     <Compile Include="CSharp\CustomPluginContext.cs" />
     <Compile Include="Javascript\JavascriptGenerator.cs" />
+    <Compile Include="Java\BusinessLogicService.cs" />
+    <Compile Include="Java\BusinessLogicServiceImpl.cs" />
+    <Compile Include="Java\DataAccessProvider.cs" />
+    <Compile Include="Java\DataAccess\DataAccessGenerator.cs" />
+    <Compile Include="Java\DataAccess\MyBatisMapper.cs" />
+    <Compile Include="Java\DataAccess\MyBatisProvider.cs" />
+    <Compile Include="Java\JavaField.cs" />
+    <Compile Include="Java\JavaGenerator.cs" />
+    <Compile Include="Java\Model.cs" />
+    <Compile Include="Java\RestController.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyService.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyWebApi.cs" />
     <Compile Include="Python\PythonField.cs" />
     <Compile Include="Python\PythonGenerator.cs" />
+    <Compile Include="Python\SQLAlchemy\SQLAlchemyModel.cs" />
     <Compile Include="Sql\DataDictionary.cs" />
     <Compile Include="Sql\SqlScriptGenerator.cs" />
     <Compile Include="Web\WebGenerator.cs" />
@@ -134,6 +145,26 @@
     <None Include="CSharp\CustomPluginContext.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Java\BusinessLogicService.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\BusinessLogicServiceImpl.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\Copyright.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\DataAccessProvider.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\DataAccess\MyBatisMapper.vm" />
+    <None Include="Java\DataAccess\MyBatisProvider.vm" />
+    <None Include="Java\Model.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\RestController.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -141,6 +172,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Python\FlaskSQLAlchemy\SQLAlchemyWebApi.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Python\SQLAlchemy\SQLAlchemyModel.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Sql\DataDictionary.vm" />

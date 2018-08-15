@@ -1,0 +1,39 @@
+## 实体类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${fields}
+package ${package};
+
+import com.x3platform.util.*;
+
+import java.util.*;
+
+/**
+ *
+ */
+public class ${className}
+{
+  /**
+   * 默认构造函数
+   */
+  public ${className}()
+  {
+  }        
+#foreach($field in $fields)
+
+  private ${field.Type} ${field.Name} = ${field.DefaultValue};
+
+  /**
+   * ${field.Description}
+   */
+  public final ${field.Type} get${field.NameFirstUpperCase}() {
+    return ${field.Name};
+  }
+
+  public final void set${field.NameFirstUpperCase}(${field.Type} value) {
+    ${field.Name} = value;
+  }  
+#end
+}

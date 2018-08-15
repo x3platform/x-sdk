@@ -1,0 +1,72 @@
+## 业务服务接口生成模板
+##
+## 参数:
+## - ${package}
+## - ${interfaceName}
+## - ${entityClassPackage}
+## - ${entityClass}
+package ${package};
+
+import ${entityClassPackage}.${entityClass};
+
+import com.x3platform.data.DataQuery;
+
+import java.util.*;
+
+/**
+ *
+ */
+public interface ${interfaceName} {
+
+  // -------------------------------------------------------
+  // 保存 删除
+  // -------------------------------------------------------
+    
+  /**
+   * 保存记录
+   *
+   * @param entity 实例 ${entityClass} 详细信息
+   * @return 实例 ${entityClass} 详细信息
+   */
+  int save(${entityClass} entity);
+
+  /**
+   * 删除记录
+   *
+   * @param id 标识
+   */
+  int delete(String id);
+
+  // -------------------------------------------------------
+  // 查询
+  // -------------------------------------------------------
+       
+  /**
+   * 查询某条记录
+   *
+   * @param id 标识
+   * @return 返回实例 ${entityClass} 的详细信息
+   */
+  ${entityClass} findOne(String id);
+   
+        
+  /**
+   * 查询所有相关记录
+   *
+   * @param query 数据查询参数
+   * @return 返回所有实例 ${entityClass} 的详细信息
+   */
+  List<${entityClass}> findAll(DataQuery query);
+
+  // -------------------------------------------------------
+  // 自定义功能
+  // -------------------------------------------------------
+
+  /**
+   * 查询是否存在相关的记录
+   *
+   * @param id 标识
+   * @return 布尔值
+   */
+  boolean isExist(String id);
+}

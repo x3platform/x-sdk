@@ -1,0 +1,109 @@
+## 数据存储提供器类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${entityClass}
+## - ${applicationName}
+## - ${dataAccessInterface}
+## - ${dataTableName}
+## - ${dataProcedurePrefix}
+## - ${fields}
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${package}.${className}">
+  <resultMap id="BaseResultMap" type="${entityClass}">
+#foreach($field in $fields)
+    <result property="${field.Name}" column="${field.DataColumnName}" />
+#end
+  </resultMap>
+  <insert id="insert" parameterType="${entityClass}">
+    INSERT INTO ${dataTableName} 
+    (
+#set ($i = 0)
+#foreach($field in $fields)
+#if($i < $fields.Count - 1)
+      ${field.DataColumnName},
+#else
+      ${field.DataColumnName}
+#end
+#set($i = $i+1)
+#end
+    )
+    VALUES
+    (
+#set ($i = 0)
+#foreach($field in $fields)
+#if($i < $fields.Count - 1)
+      #{${field.Name}},
+#else
+      #{${field.Name}}
+#end
+#set($i = $i+1)
+#end
+    )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="java.lang.String" parameterType="${entityClass}">
+    UPDATE ${dataTableName} SET
+
+#set ($i = 0)
+#foreach($field in $fields)
+#if($i < $fields.Count - 1)
+      ${field.DataColumnName} = #{${field.Name}},
+#else
+      ${field.DataColumnName} = #{${field.Name}}
+#end
+#set($i = $i+1)
+#end
+
+    WHERE id = #{id}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    DELETE FROM ${dataTableName} WHERE id = #{id}
+  </delete>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    SELECT * FROM ${dataTableName} WHERE id = #{id}
+  </select>
+  <select id="findAll" parameterType="java.util.Map"  resultMap="BaseResultMap" >
+    SELECT * FROM ${dataTableName} t
+    <where>
+#foreach($field in $fields)
+#if(${field.Type} == "String")
+      <if test="param_${field.DataColumnName} != null and param_${field.DataColumnName} != ''">
+#else
+      <if test="param_${field.DataColumnName} != null">
+#end
+        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
+      </if>
+#end
+    </where>
+
+    <if test="orders != null and orders.size() > 0">
+      ORDER BY
+      <foreach collection="orders" item="order" index="index" separator="," >
+        #{order}
+      </foreach>
+    </if>
+    
+    <if test="length > 0">
+      LIMIT 0, ${length}
+    </if>
+  </select>
+  <select id="getRowCount" >
+    SELECT COUNT(*) AS "RowCount" FROM ${dataTableName} t
+    <where>
+#foreach($field in $fields)
+#if(${field.Type} == "String")
+      <if test="param_${field.DataColumnName} != null and param_${field.DataColumnName} != ''">
+#else
+      <if test="param_${field.DataColumnName} != null">
+#end
+        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
+      </if>
+#end
+    </where>
+  </select>
+  <select id="isExist" resultType="boolean" >
+    SELECT COUNT(0) AS "Count" FROM ${dataTableName} WHERE id = #{id}
+  </select>
+</mapper>
