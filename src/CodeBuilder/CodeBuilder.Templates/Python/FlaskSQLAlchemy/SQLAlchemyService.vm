@@ -6,10 +6,11 @@
 # coding:utf8
 # !/usr/bin/python
 import sqlalchemy
-
-from ${entityModuleName} import ${entityClass} as model, db
+from datetime import datetime
 
 from ...util.sqlalchemy_helper import set_entity_props
+
+from ${entityModuleName} import ${entityClass} as model, db
 
 class ${className}:
     def __init__(self):
@@ -19,7 +20,7 @@ class ${className}:
     def save(self, args):
         """
         保存对象
-        :entity args: 参数信息
+        :param args: 参数信息
         :return: 错误码
         """
 
@@ -33,7 +34,7 @@ class ${className}:
     def insert(self, args):
         """
         新建对象
-        :entity args: 参数信息
+        :param args: 参数信息
         :return: 错误码
         """
 
@@ -50,7 +51,7 @@ class ${className}:
     def update(self, args):
         """
         更新对象
-        :entity args: 参数信息
+        :param args: 参数信息
         :return: 错误码
         """
 
@@ -84,20 +85,17 @@ class ${className}:
 
         return 0, u"Success", entity
  
-    def findAll(self):
+    def findAll(self, args):
         """ 查询列表信息 """
 
-        return self.query.order_by(model.id.desc()).all()
+        return 0, u"Success", self.query.order_by(model.id.desc()).all()
 
     def getPaging(self, args):
         """分页查询列表信息"""
 
         filters = ''
         
-        if args.id is not None and len(args.id) > 0:
-            filters = sqlalchemy.and_(filters, args.id == model.id)
-
         if args.name is not None and len(args.name) > 0:
             filters = sqlalchemy.and_(filters, model.name.like("%" + args.name + "%"))
 
-        return self.query.filter(filters).order_by(model.id.desc()).all()
+        return 0, u"Success", self.query.filter(filters).order_by(model.id.desc()).limit(args.limit).offset(args.start).all()

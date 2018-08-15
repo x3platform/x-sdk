@@ -5,12 +5,12 @@
 ## - ${fields}
 # coding:utf8
 # !/usr/bin/python
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
+from ...util.sqlalchemy_helper import db
 
-db = SQLAlchemy()
 
 class ${className}(db.Model):
-    __tablename__ = '${fields}'
+    __tablename__ = '${dataTableName}'
 
 #foreach($field in $fields)
 #if( ${field.Description.Length} > 0)

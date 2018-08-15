@@ -82,8 +82,7 @@ namespace X3Platform.CodeBuilder.Templates.Python
             return outString.ToString();
         }
         #endregion
-
-
+        
         #region º¯Êý:GetFields(DataTableSchema table)
         public IList<PythonField> GetFields(DataTableSchema table)
         {
@@ -122,10 +121,10 @@ namespace X3Platform.CodeBuilder.Templates.Python
                 case DbType.Binary: return "byte[]";
                 case DbType.Boolean: return "Boolean";
                 case DbType.Byte: return "int";
-                case DbType.Currency: return "decimal";
+                case DbType.Currency: return "DECIMAL";
                 case DbType.Date: return "Date";
                 case DbType.DateTime: return "DateTime";
-                case DbType.Decimal: return "decimal";
+                case DbType.Decimal: return "DECIMAL";
                 case DbType.Double: return "double";
                 case DbType.Guid: return "Guid";
                 case DbType.Int16: return "short";
@@ -140,7 +139,7 @@ namespace X3Platform.CodeBuilder.Templates.Python
                 case DbType.UInt16: return "ushort";
                 case DbType.UInt32: return "uint";
                 case DbType.UInt64: return "ulong";
-                case DbType.VarNumeric: return "decimal";
+                case DbType.VarNumeric: return "DECIMAL";
                 default: return "UnknownType";
             }
         }

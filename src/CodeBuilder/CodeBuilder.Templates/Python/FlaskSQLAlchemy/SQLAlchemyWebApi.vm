@@ -3,7 +3,7 @@
 ## 可选参数:
 ## - ${className}
 ## - ${fields}
-# coding:utf8
+# -*- coding:utf8 -*-
 # !/usr/bin/python
 """ 
 ${className}API File
@@ -12,9 +12,11 @@ from app_logging import logger
 from flask import Response, json, request
 from flask_restful import Resource, reqparse
 from ${serviceModuleName} import ${serviceClass} as service
+from ...util.sqlalchemy_helper import entity_to_dict, list_to_dict
 
 
 requestParser = reqparse.RequestParser()
+
 #foreach($field in $fields)
 #if( ${field.Type} == "String" )
 requestParser.add_argument('${field.Name}', type=unicode)
@@ -77,22 +79,32 @@ class ${className}QueryAPI(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('scene')
 
-        args = requestParser.parse_args()
+        args = parser.parse_args()
 
-        if args.scene == 'query'：
+        if args.scene == 'query':
             # getPaging 查询列表记录
             parser = reqparse.RequestParser()
-            parser.add_argument('name')
-        
-            code, message, data = self.service.findAll(args)
-            self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
+            parser.add_argument('page', type=int)
+            parser.add_argument('start', type=int)
+            parser.add_argument('limit', type=int)
+            parser.add_argument('name', type=unicode)
 
-        elif args.scene == 'findAll'：
+            args = parser.parse_args()
+
+            code, message, data = self.service.getPaging(args)
+            self.res.data = json.dumps({'code':code, 'message':message, 'data':list_to_dict(data)}, ensure_ascii=False)
+
+        elif args.scene == 'findAll':
             # findAll 查询列表记录
             parser = reqparse.RequestParser()
-            parser.add_argument('name')
-        
+            parser.add_argument('name', type=unicode)
+
+            args = parser.parse_args()
+
             code, message, data = self.service.findAll(args)
-            self.res.data = json.dumps({'code':code, 'message':message, 'data':data}, ensure_ascii=False)
+            self.res.data = json.dumps({'code':code, 'message':message, 'data':list_to_dict(data)}, ensure_ascii=False)
+ 
+        else:
+            self.res.data = json.dumps({'code': 0, 'message': 'Success'}, ensure_ascii=False)
 
         return self.res
