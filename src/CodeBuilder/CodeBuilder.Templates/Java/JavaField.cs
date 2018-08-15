@@ -46,7 +46,16 @@ namespace X3Platform.CodeBuilder.Templates.Java
             set { this.m_Type = value; }
         }
 
-
+        private string m_JdbcType;
+        /// <summary>
+        /// JDBC 数据类型
+        /// </summary>
+        public string JdbcType
+        {
+            get { return this.m_JdbcType; }
+            set { this.m_JdbcType = value; }
+        }
+        
         private string m_DefaultValue;
 
         /// <summary>默认值</summary>

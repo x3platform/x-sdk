@@ -89,6 +89,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
                     NameFirstUpperCase = FieldHelper.FormatName(table.Columns[i].Name),
                     DataColumnName = table.Columns[i].Name,
                     Type = ConvertType(table.Columns[i].Type),
+                    JdbcType = ConvertJdbcType(table.Columns[i].NativeType),
                     Length = table.Columns[i].Length,
                     DefaultValue = GetDefaultValue(table.Columns[i].Type),
                     Nullable = table.Columns[i].Nullable,
@@ -128,6 +129,45 @@ namespace X3Platform.CodeBuilder.Templates.Java
                 case DbType.SByte: return "sbyte";
                 case DbType.Single: return "float";
                 case DbType.String: return "String";
+                case DbType.StringFixedLength: return "String";
+                case DbType.Time: return "TimeSpan";
+                case DbType.UInt16: return "ushort";
+                case DbType.UInt32: return "uint";
+                case DbType.UInt64: return "ulong";
+                case DbType.VarNumeric: return "decimal";
+                default: return "UnknownType";
+            }
+        }
+        #endregion
+
+        #region 函数:ConvertJdbcType(DbType type)
+        /// <summary>
+        /// 将数据库的 DbType 数据类型转换到 .Net Framework 的数据类型
+        /// </summary>
+        /// <param name="type">数据类型</param>
+        /// <returns>System.Data.DbType 类型</returns>
+        protected virtual string ConvertJdbcType(DbType type)
+        {
+            switch (type)
+            {
+                case DbType.AnsiString: return "VARCHAR";
+                case DbType.AnsiStringFixedLength: return "VARCHAR";
+                case DbType.Binary: return "byte[]";
+                case DbType.Boolean: return "bool";
+                case DbType.Byte: return "int";
+                case DbType.Currency: return "decimal";
+                case DbType.Date: return "TIMESTAMP";
+                case DbType.DateTime: return "TIMESTAMP";
+                case DbType.Decimal: return "decimal";
+                case DbType.Double: return "double";
+                case DbType.Guid: return "Guid";
+                case DbType.Int16: return "short";
+                case DbType.Int32: return "INTEGER";
+                case DbType.Int64: return "long";
+                case DbType.Object: return "object";
+                case DbType.SByte: return "sbyte";
+                case DbType.Single: return "float";
+                case DbType.String: return "VARCHAR";
                 case DbType.StringFixedLength: return "String";
                 case DbType.Time: return "TimeSpan";
                 case DbType.UInt16: return "ushort";

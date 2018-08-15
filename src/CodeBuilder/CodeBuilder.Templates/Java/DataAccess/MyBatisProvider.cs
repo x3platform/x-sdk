@@ -14,16 +14,12 @@ namespace X3Platform.CodeBuilder.Templates.Java.DataAccess
             VelocityContext context = new VelocityContext();
 
             context.Put("self", this);
-            context.Put("namespacePrefix", this.NamespacePrefix);
             context.Put("package", this.Package);
             context.Put("className", this.ClassName);
+            context.Put("entityClassPackage", this.EntityClassPackage);
             context.Put("entityClass", this.EntityClass);
-            context.Put("applicationName", this.ApplicationName);
             context.Put("dataAccessInterface", this.DataAccessInterface);
-            context.Put("dataTableName", this.DataTableName);
-            context.Put("fields", this.fields);
-            context.Put("supportAuthorization", this.SupportAuthorization);
-
+            
             return VelocityManager.Instance.ParseTemplateVirtualPath(context,
                StringHelper.NullOrEmptyTo(TemplateFile, "templates/Java/DataAccess/MyBatisProvider.vm"));
         }

@@ -1,0 +1,176 @@
+## RestController 类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${applicationName}
+## - ${requestUri}
+## - ${entityClassPackage}
+## - ${entityClass}
+## - ${businessLogicInterfacePackage}
+## - ${businessLogicInterface}
+## - ${businessLogicServiceInstance}
+package ${package};
+
+import ${entityClassPackage}.*;
+import ${businessLogicInterfacePackage}.*;
+
+import com.x3platform.data.*;
+import com.x3platform.digitalNumber.DigitalNumberContext;
+import com.x3platform.messages.MessageObject;
+import com.x3platform.globalization.I18n;
+import com.x3platform.util.*;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.*;
+
+/**
+ *
+ */
+@Lazy(true)
+@RestController
+@RequestMapping("${requestUri}")
+public class ${className}
+{
+    // 业务服务接口
+    private ${businessLogicInterface} service = null; // ${businessLogicServiceInstance};
+
+    // -------------------------------------------------------
+    // 保存 删除
+    // -------------------------------------------------------
+    
+  /**
+   * 保存记录
+   *
+   * @return 返回操作结果
+   */
+  @RequestMapping("/save")
+  public final String Save(@RequestBody String data) {
+    Document entity = JSON.parseObject(data, Document.class);
+
+    this.service.save(entity);
+
+    return MessageObject.stringify("0", I18n.getStrings().text("msg_save_success"));
+  }
+  
+  /**
+   * 删除记录
+   *
+   * @param data 请求的数据内容
+   * @return 返回操作结果
+   */
+  @RequestMapping("/delete")
+  public final String delete(@RequestBody String data) {
+    JSONObject req = JSON.parseObject(data);
+
+    String id = req.getString("id");
+
+    this.service.delete(id);
+
+    return MessageObject.stringify("0", I18n.getStrings().text("msg_delete_success"));
+  }
+
+  // -------------------------------------------------------
+  // 查询
+  // -------------------------------------------------------
+  
+  /**
+   * 获取详细信息
+   *
+   * @param data 请求的数据内容
+   * @return 返回一个相关的实例详细信息.
+   */
+  @RequestMapping("/findOne")
+  public final String findOne(@RequestBody String data) {
+    JSONObject req = JSON.parseObject(data);
+
+    String id = req.getString("id");
+
+    ${entityClass} entity = this.service.findOne(id);
+
+    return "{\"data\":" + JSON.toJSONString(entity) + ","
+      + MessageObject.stringify("0", I18n.getStrings().text("msg_query_success"), true) + "}";
+  }
+
+  /**
+   * 获取列表信息
+   *
+   * @param data 请求的数据内容
+   * @return 返回一个相关的实例列表信息.
+   */
+  @RequestMapping("/findAll")
+  public final String findAll(@RequestBody String data) {
+    JSONObject req = JSON.parseObject(data);
+
+    DataQuery query = DataQuery.create(req.getString("query"));
+
+    // 根据实际需要设置当前用户权限
+    // query.getVariables().put("accountId", KernelContext.getCurrent().getUser().getId())
+            
+    // if (req.getString("su") == "1" && AppsSecurity.IsAdministrator(KernelContext.getCurrent().getUser(), ${applicationName}Configuration.ApplicationName))
+    // {
+    //   query.getVariables().put("elevatedPrivileges", "1");
+    // }
+
+    // 根据实际需要设置查询参数
+    // query.getWhere().put("Name", searchText);
+    // query.setLength(length);
+
+    List<${entityClass}> list = this.service.findAll(query);
+
+    return "{\"data\":" + JSON.toJSONString(list) + ","
+      + MessageObject.stringify("0", I18n.getStrings().text("msg_query_success"), true) + "}";
+  }
+
+  // -------------------------------------------------------
+  // 自定义功能
+  // -------------------------------------------------------
+  
+  /**
+   * 查询是否存在相关的记录
+   *
+   * @param data 请求的数据内容
+   * @return 返回操作结果
+   */
+  @RequestMapping("/isExist")
+  public final String isExist(@RequestBody String data) {
+    JSONObject req = JSON.parseObject(data);
+
+    String id = req.getString("id");
+
+    boolean result = this.service.isExist(id);
+
+    return "{\"data\":" + JSON.toJSONString(result) + ","
+      + MessageObject.stringify("0", I18n.getStrings().text("msg_query_success"), true) + "}";
+  }
+  
+  /**
+   * 查询是否存在相关的记录
+   *
+   * @param data 请求的数据内容
+   * @return 返回操作结果
+   */
+  @RequestMapping("/create")
+  public String CreateNewObject(@RequestBody String data){
+    Document entity = JSON.parseObject(data, Document.class);
+
+    entity.setId(DigitalNumberContext.generate("Key_Guid"));
+    
+    // 根据实际需要设置默认值
+    // entity.setStatus(1);
+    // entity.setModifiedDate(new Date());
+    // entity.setCreatedDate(new Date());
+        
+    return "{\"data\":" + JSON.toJSONString(entity) + ","
+      + MessageObject.stringify("0", I18n.getStrings().text("msg_query_success"), true) + "}";
+  }
+}

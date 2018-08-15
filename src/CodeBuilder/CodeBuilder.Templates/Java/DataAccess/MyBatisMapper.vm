@@ -14,9 +14,22 @@
 <mapper namespace="${package}.${className}">
   <resultMap id="BaseResultMap" type="${entityClass}">
 #foreach($field in $fields)
-    <result property="${field.Name}" column="${field.DataColumnName}" />
+    <result property="${field.Name}" jdbcType="${field.JdbcType}" column="${field.DataColumnName}" />
 #end
   </resultMap>
+  <sql id="Select_Where_Clause">
+    <where>
+#foreach($field in $fields)
+#if(${field.Type} == "String")
+      <if test="param_${field.DataColumnName} != null and param_${field.DataColumnName} != ''">
+#else
+      <if test="param_${field.DataColumnName} != null">
+#end
+        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
+      </if>
+#end
+    </where>
+  </sql>
   <insert id="insert" parameterType="${entityClass}">
     INSERT INTO ${dataTableName} 
     (
@@ -35,9 +48,9 @@
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-      #{${field.Name}},
+      #{${field.Name},${field.JdbcType}},
 #else
-      #{${field.Name}}
+      #{${field.Name},${field.JdbcType}}
 #end
 #set($i = $i+1)
 #end
@@ -49,9 +62,9 @@
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-      ${field.DataColumnName} = #{${field.Name}},
+      ${field.DataColumnName} = #{${field.Name},${field.JdbcType}},
 #else
-      ${field.DataColumnName} = #{${field.Name}}
+      ${field.DataColumnName} = #{${field.Name},${field.JdbcType}}
 #end
 #set($i = $i+1)
 #end
@@ -64,44 +77,26 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap" >
     SELECT * FROM ${dataTableName} WHERE id = #{id}
   </select>
-  <select id="findAll" parameterType="java.util.Map"  resultMap="BaseResultMap" >
-    SELECT * FROM ${dataTableName} t
-    <where>
-#foreach($field in $fields)
-#if(${field.Type} == "String")
-      <if test="param_${field.DataColumnName} != null and param_${field.DataColumnName} != ''">
-#else
-      <if test="param_${field.DataColumnName} != null">
-#end
-        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
-      </if>
-#end
-    </where>
-
+  <select id="findAll" parameterType="java.util.Map" resultMap="BaseResultMap" >
+    SELECT * FROM ${dataTableName}
+    <if test="_parameter != null">
+      <include refid="Select_Where_Clause" />
+    </if>
     <if test="orders != null and orders.size() > 0">
       ORDER BY
       <foreach collection="orders" item="order" index="index" separator="," >
         #{order}
       </foreach>
     </if>
-    
     <if test="length > 0">
       LIMIT 0, ${length}
     </if>
   </select>
   <select id="getRowCount" >
-    SELECT COUNT(*) AS "RowCount" FROM ${dataTableName} t
-    <where>
-#foreach($field in $fields)
-#if(${field.Type} == "String")
-      <if test="param_${field.DataColumnName} != null and param_${field.DataColumnName} != ''">
-#else
-      <if test="param_${field.DataColumnName} != null">
-#end
-        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
-      </if>
-#end
-    </where>
+    SELECT COUNT(*) AS "RowCount" FROM ${dataTableName}
+    <if test="_parameter != null">
+      <include refid="Select_Where_Clause" />
+    </if>
   </select>
   <select id="isExist" resultType="boolean" >
     SELECT COUNT(0) AS "Count" FROM ${dataTableName} WHERE id = #{id}

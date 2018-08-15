@@ -34,6 +34,16 @@ namespace X3Platform.CodeBuilder.Templates.Java.DataAccess
         }
         #endregion
 
+        #region 属性:EntityClassPackage
+        private string m_EntityClassPackage;
+        /// <summary>实体类所在的包名称</summary>
+        public string EntityClassPackage
+        {
+            get { return m_EntityClassPackage; }
+            set { m_EntityClassPackage = value; }
+        }
+        #endregion
+
         #region 属性:EntityClass
         private string m_EntityClass;
         /// <summary>
@@ -87,16 +97,15 @@ namespace X3Platform.CodeBuilder.Templates.Java.DataAccess
             // 名称空间前缀
             this.DataTableName = configuration.Tasks[taskName].Properties["DataTable"].Value;
 
-            // 名称空间前缀
-            this.NamespacePrefix = ((string.IsNullOrEmpty(configuration.NamespaceRoot)) ? string.Empty : (configuration.NamespaceRoot + ".")) +
-               (configuration.Tasks[taskName].Properties["NamespacePrefix"] == null ? "" : configuration.Tasks[taskName].Properties["NamespacePrefix"].Value);
-
             // 名称空间
             this.Package = ((string.IsNullOrEmpty(configuration.NamespaceRoot)) ? string.Empty : (configuration.NamespaceRoot + ".")) +
                 configuration.Tasks[taskName].Properties["Package"].Value;
 
             // 类名称
             this.ClassName = configuration.Tasks[taskName].Properties["ClassName"].Value;
+
+            // 实体类所在的包名称
+            this.EntityClassPackage = configuration.Tasks[taskName].Properties["EntityClassPackage"] == null ? "" : configuration.Tasks[taskName].Properties["EntityClassPackage"].Value;
 
             // 实体类名称
             this.EntityClass = configuration.Tasks[taskName].Properties["EntityClass"].Value;
