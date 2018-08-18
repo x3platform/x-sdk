@@ -48,23 +48,23 @@
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-      #{${field.Name},${field.JdbcType}},
+      #{${field.Name},jdbcType=${field.JdbcType}},
 #else
-      #{${field.Name},${field.JdbcType}}
+      #{${field.Name},jdbcType=${field.JdbcType}}
 #end
 #set($i = $i+1)
 #end
     )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="java.lang.String" parameterType="${entityClass}">
+  <update id="updateByPrimaryKey" parameterType="${entityClass}">
     UPDATE ${dataTableName} SET
 
 #set ($i = 0)
 #foreach($field in $fields)
 #if($i < $fields.Count - 1)
-      ${field.DataColumnName} = #{${field.Name},${field.JdbcType}},
+      ${field.DataColumnName} = #{${field.Name},jdbcType=${field.JdbcType}},
 #else
-      ${field.DataColumnName} = #{${field.Name},${field.JdbcType}}
+      ${field.DataColumnName} = #{${field.Name},jdbcType=${field.JdbcType}}
 #end
 #set($i = $i+1)
 #end
@@ -76,7 +76,7 @@
   </delete>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap" >
     SELECT * FROM ${dataTableName} WHERE id = #{id}
-  </select>
+  </select>  
   <select id="findAll" parameterType="java.util.Map" resultMap="BaseResultMap" >
     SELECT * FROM ${dataTableName}
     <if test="_parameter != null">
@@ -93,7 +93,7 @@
     </if>
   </select>
   <select id="getRowCount" >
-    SELECT COUNT(*) AS "RowCount" FROM ${dataTableName}
+    SELECT COUNT(0) AS "RowCount" FROM ${dataTableName}
     <if test="_parameter != null">
       <include refid="Select_Where_Clause" />
     </if>

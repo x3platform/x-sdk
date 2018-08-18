@@ -15,6 +15,7 @@ import ${entityClassPackage}.*;
 import ${businessLogicInterfacePackage}.*;
 import ${dataAccessInterfacePackage}.*;
 
+import com.x3platform.KernelContext;
 import com.x3platform.data.*;
 import com.x3platform.util.*;
 
@@ -24,9 +25,8 @@ import java.util.*;
 
 /**
  */
-public class ${className} implements ${businessLogicInterface}
-{
-    /**
+public class ${className} implements ${businessLogicInterface} {
+  /**
    * 数据提供器
    */
   @Autowired
@@ -43,12 +43,23 @@ public class ${className} implements ${businessLogicInterface}
    * @return 实例 ${entityClass} 详细信息
    */
   @Override
-  public final int save(${entityClass} entity) {
-    if (!this.provider.isExist(entity.getId())) {
-      return this.provider.insert(entity);
-    } else {
-      return this.provider.updateByPrimaryKeySelective(entity);
+  public int save(${entityClass} entity) {
+    int affectedRows = -1;
+
+    String id = entity.getId();
+
+    if (StringUtil.isNullOrEmpty(id)) {
+      throw new NullPointerException("必须填写对象标识");
     }
+
+    if (this.provider.selectByPrimaryKey(id) == null) {
+      affectedRows = this.provider.insert(entity);
+    } else {
+      affectedRows = this.provider.updateByPrimaryKey(entity);
+    }
+
+    KernelContext.getLog().debug("save entity id:'" + id + "', affectedRows:" + affectedRows);
+
     return 0;
   }
   
@@ -58,8 +69,11 @@ public class ${className} implements ${businessLogicInterface}
    * @param id 实例的标识
    */
   @Override
-  public final int delete(String id) {
-    this.provider.deleteByPrimaryKey(id);
+  public int delete(String id) {
+    int affectedRows = this.provider.deleteByPrimaryKey(id);
+
+    KernelContext.getLog().debug("delete entity id:'" + id + "', affectedRows:" + affectedRows);
+    
     return 0;
   }
 
@@ -75,7 +89,7 @@ public class ${className} implements ${businessLogicInterface}
    */
   @Override
   public ${entityClass} findOne(String id) {
-      return this.provider.selectByPrimaryKey(id) ;
+    return this.provider.selectByPrimaryKey(id) ;
   }
   
   /**
@@ -87,7 +101,7 @@ public class ${className} implements ${businessLogicInterface}
   @Override
   public List<${entityClass}> findAll(DataQuery query)
   {
-      return this.provider.findAll(query.getMap());
+    return this.provider.findAll(query.getMap());
   }
 
   // -------------------------------------------------------
@@ -101,7 +115,8 @@ public class ${className} implements ${businessLogicInterface}
    * @return 布尔值
    */
   @Override
-  public final boolean isExist(String id) {
-    return this.provider.isExist(id);
+  public boolean isExist(String id) {
+    // 实现类需要重新实现此方法.
+    throw new UnsupportedOperationException("此对象未实现方法：boolean isExist(String id)。");
   }
 }

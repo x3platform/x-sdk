@@ -102,7 +102,7 @@ namespace X3Platform.CodeBuilder.Templates.Java.DataAccess
                 configuration.Tasks[taskName].Properties["Package"].Value;
 
             // 类名称
-            this.ClassName = configuration.Tasks[taskName].Properties["ClassName"].Value;
+            this.ClassName = configuration.Tasks[taskName].Properties["ClassName"] == null ? "" : configuration.Tasks[taskName].Properties["ClassName"].Value;
 
             // 实体类所在的包名称
             this.EntityClassPackage = configuration.Tasks[taskName].Properties["EntityClassPackage"] == null ? "" : configuration.Tasks[taskName].Properties["EntityClassPackage"].Value;

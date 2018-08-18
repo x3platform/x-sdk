@@ -89,7 +89,6 @@
     <Compile Include="Javascript\JavascriptGenerator.cs" />
     <Compile Include="Java\BusinessLogicService.cs" />
     <Compile Include="Java\BusinessLogicServiceImpl.cs" />
-    <Compile Include="Java\DataAccessProvider.cs" />
     <Compile Include="Java\DataAccess\DataAccessGenerator.cs" />
     <Compile Include="Java\DataAccess\MyBatisMapper.cs" />
     <Compile Include="Java\DataAccess\MyBatisProvider.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Java\JavaGenerator.cs" />
     <Compile Include="Java\Model.cs" />
     <Compile Include="Java\RestController.cs" />
+    <Compile Include="Java\Tests\BusinessLogicServiceTests.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyService.cs" />
     <Compile Include="Python\FlaskSQLAlchemy\SQLAlchemyWebApi.cs" />
@@ -154,15 +154,15 @@
     <None Include="Java\Copyright.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Java\DataAccessProvider.vm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Java\DataAccess\MyBatisMapper.vm" />
     <None Include="Java\DataAccess\MyBatisProvider.vm" />
     <None Include="Java\Model.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Java\RestController.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Java\Tests\BusinessLogicServiceTests.vm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Python\FlaskSQLAlchemy\SQLAlchemyModel.vm">

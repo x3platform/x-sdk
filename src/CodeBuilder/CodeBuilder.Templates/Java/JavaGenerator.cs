@@ -89,7 +89,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
                     NameFirstUpperCase = FieldHelper.FormatName(table.Columns[i].Name),
                     DataColumnName = table.Columns[i].Name,
                     Type = ConvertType(table.Columns[i].Type),
-                    JdbcType = ConvertJdbcType(table.Columns[i].NativeType),
+                    JdbcType = ConvertJdbcType(table.Columns[i].Type),
                     Length = table.Columns[i].Length,
                     DefaultValue = GetDefaultValue(table.Columns[i].Type),
                     Nullable = table.Columns[i].Nullable,

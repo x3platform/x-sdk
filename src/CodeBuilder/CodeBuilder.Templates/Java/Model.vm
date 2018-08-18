@@ -28,11 +28,11 @@ public class ${className}
   /**
    * ${field.Description}
    */
-  public final ${field.Type} get${field.NameFirstUpperCase}() {
+  public ${field.Type} get${field.NameFirstUpperCase}() {
     return ${field.Name};
   }
 
-  public final void set${field.NameFirstUpperCase}(${field.Type} value) {
+  public void set${field.NameFirstUpperCase}(${field.Type} value) {
     ${field.Name} = value;
   }  
 #end

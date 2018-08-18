@@ -10,6 +10,8 @@ package ${package};
 
 import ${entityClassPackage}.${entityClass};
 
+import java.util.*;
+
 /**
  *
  */
@@ -31,14 +33,14 @@ public interface ${dataAccessInterface} {
    *
    * @param record ${entityClass} 实例的详细信息
    */
-  int updateByPrimaryKey(${entityClass} param);
+  int updateByPrimaryKey(${entityClass} record);
     
   /**
    * 删除记录
    *
    * @param id 标识
    */
-  int deleteByPrimaryKey(string id);
+  int deleteByPrimaryKey(String id);
 
   // -------------------------------------------------------
   // 查询
@@ -50,7 +52,7 @@ public interface ${dataAccessInterface} {
    * @param id 标识
    * @return 返回一个 ${entityClass} 实例的详细信息
    */
-  ${entityClass} findOne(string id);
+  ${entityClass} selectByPrimaryKey(String id);
     
   /**
    * 查询所有相关记录
@@ -70,5 +72,5 @@ public interface ${dataAccessInterface} {
    * @param id 标识
    * @return 布尔值
    */
-  boolean isExist(string id);
+  boolean isExist(String id);
 }

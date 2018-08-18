@@ -1,0 +1,123 @@
+## 业务服务接口测试类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${entityClassPackage}
+## - ${entityClass}
+## - ${businessLogicInterfacePackage}
+## - ${businessLogicInterface}
+## - ${businessLogicServiceInstance}
+package ${package};
+
+import ${entityClassPackage}.*;
+import ${businessLogicInterfacePackage}.*;
+
+import com.x3platform.data.*;
+import com.x3platform.KernelContext;
+import com.x3platform.digitalNumber.DigitalNumberContext;
+import com.x3platform.messages.MessageObject;
+import com.x3platform.globalization.I18n;
+import com.x3platform.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import org.junit.*;
+import org.junit.runner.RunWith;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
+
+/**
+ *
+ */
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ${className} {
+
+  // 模拟的实体类列表
+  private List<${entityClass}> mockEntities = new ArrayList<>();
+
+  @Before
+  public void init() throws Exception {
+    KernelContext.getLog().debug("@Before");
+
+    ${businessLogicInterface} service = ${businessLogicServiceInstance};
+    // 返回代码
+    int result = 0;
+
+    for (int i = 0; i < 15; i++) {
+      // 设置 测试对象的标识
+      String id = "test_" + DigitalNumberContext.generate("Key_Nonce");
+
+      ${entityClass} entity = new ${entityClass}();
+
+      entity.setId(id);
+
+      result = service.save(entity);
+
+      if (result == 0) {
+        mockEntities.add(entity);
+      }
+    }
+  }
+
+  @After
+  public void distroy() {
+    ${businessLogicInterface} service = ${businessLogicServiceInstance};
+    // 返回代码
+    int result = 0;
+
+    for (${entityClass} item : mockEntities) {
+      result = service.delete(item.getId());
+    }
+  }
+
+  @Test
+  public void testSave() {
+    ${businessLogicInterface} service = ${businessLogicServiceInstance};
+    // 返回代码
+    int result = 0;
+    // 设置 测试对象的标识
+    String id = "test_" + DigitalNumberContext.generate("Key_Nonce");
+
+    ${entityClass} entity = new ${entityClass}();
+
+    entity.setId(id);
+
+    result = service.save(entity);
+
+    assertEquals("result = 0", 0, result);
+
+    result = service.delete(id);
+
+    assertEquals("result = 0", 0, result);
+  }
+
+  @Test
+  public void testFindOne() {
+    ${businessLogicInterface} service = ${businessLogicServiceInstance};
+    // 设置 测试对象的标识
+    String id = mockEntities.get(0).getId();
+
+    ${entityClass} entity = service.findOne(id);
+
+    assertNotNull("entity is not null", entity);
+  }
+
+  @Test
+  public void testFindAll() {
+    ${businessLogicInterface} service = ${businessLogicServiceInstance};
+    // 设置 测试查询参数
+    DataQuery query = new DataQuery();
+
+    List<${entityClass}> list = service.findAll(query);
+
+    assertNotNull("list is not null", list);
+    assertNotNull("list.size() > " + this.mockEntities.size(), list.size() >= this.mockEntities.size());
+  }
+}

@@ -303,7 +303,9 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 case "ntext":
                 case "text": return DbType.String;
 
+                case "date": return DbType.Date;
                 case "datetime": return DbType.DateTime;
+
                 case "bit": return DbType.Boolean;
 
                 case "smallint": return DbType.Int16;
@@ -339,7 +341,14 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
             {
                 string temp = actualType.Substring(index + 1, actualType.Length - index - 2);
 
-                length = Convert.ToInt32(temp);
+                if (temp.IndexOf(',') > -1)
+                {
+                    length = Convert.ToInt32(temp.Substring(0, temp.IndexOf(',')));
+                }
+                else
+                {
+                    length = Convert.ToInt32(temp);
+                }
             }
 
             return length;
@@ -399,7 +408,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 case DbType.Currency:
                 case DbType.VarNumeric:
                 case DbType.Decimal: return "decimal";
-
+                    
                 case DbType.Date: return "datetime";
                 case DbType.DateTime: return "datetime";
                 case DbType.Double: return "float";

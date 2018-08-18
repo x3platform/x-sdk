@@ -3,8 +3,8 @@
 ## 参数:
 ## - ${package}
 ## - ${className}
-## - ${applicationName}
 ## - ${requestUri}
+## - ${applicationName}
 ## - ${entityClassPackage}
 ## - ${entityClass}
 ## - ${businessLogicInterfacePackage}
@@ -54,8 +54,8 @@ public class ${className}
    * @return 返回操作结果
    */
   @RequestMapping("/save")
-  public final String Save(@RequestBody String data) {
-    Document entity = JSON.parseObject(data, Document.class);
+  public String Save(@RequestBody String data) {
+    ${entityClass} entity = JSON.parseObject(data, ${entityClass}.class);
 
     this.service.save(entity);
 
@@ -69,7 +69,7 @@ public class ${className}
    * @return 返回操作结果
    */
   @RequestMapping("/delete")
-  public final String delete(@RequestBody String data) {
+  public String delete(@RequestBody String data) {
     JSONObject req = JSON.parseObject(data);
 
     String id = req.getString("id");
@@ -90,7 +90,7 @@ public class ${className}
    * @return 返回一个相关的实例详细信息.
    */
   @RequestMapping("/findOne")
-  public final String findOne(@RequestBody String data) {
+  public String findOne(@RequestBody String data) {
     JSONObject req = JSON.parseObject(data);
 
     String id = req.getString("id");
@@ -108,7 +108,7 @@ public class ${className}
    * @return 返回一个相关的实例列表信息.
    */
   @RequestMapping("/findAll")
-  public final String findAll(@RequestBody String data) {
+  public String findAll(@RequestBody String data) {
     JSONObject req = JSON.parseObject(data);
 
     DataQuery query = DataQuery.create(req.getString("query"));
@@ -136,13 +136,37 @@ public class ${className}
   // -------------------------------------------------------
   
   /**
+   * 获取分页内容
+   *
+   * @param data 请求的数据内容
+   * @return 返回一个相关的实例列表信息
+   */
+  @RequestMapping("/query")
+  public String Query(@RequestBody String data) {
+    JSONObject req = JSON.parseObject(data);
+
+    DataPaging paging = DataPagingUtil.Create(req.getString("paging"));
+
+    DataQuery query = DataQuery.create(req.getString("query"));
+
+    PageHelper.startPage(paging.getCurrentPage(), paging.getPageSize());
+
+    List<${entityClass}> list = this.service.findAll(query);
+
+    paging.setTotal(DataPagingUtil.getTotal(list));
+
+    return "{\"data\":" + JSON.toJSONString(list) + ",\"paging\":" + JSON.toJSONString(paging) + ","
+      + MessageObject.stringify("0", I18n.getStrings().text("msg_query_success"), true) + "}";
+  }
+
+  /**
    * 查询是否存在相关的记录
    *
    * @param data 请求的数据内容
    * @return 返回操作结果
    */
   @RequestMapping("/isExist")
-  public final String isExist(@RequestBody String data) {
+  public String isExist(@RequestBody String data) {
     JSONObject req = JSON.parseObject(data);
 
     String id = req.getString("id");
@@ -160,8 +184,8 @@ public class ${className}
    * @return 返回操作结果
    */
   @RequestMapping("/create")
-  public String CreateNewObject(@RequestBody String data){
-    Document entity = JSON.parseObject(data, Document.class);
+  public String createNewObject(@RequestBody String data){
+    ${entityClass} entity = JSON.parseObject(data, ${entityClass}.class);
 
     entity.setId(DigitalNumberContext.generate("Key_Guid"));
     

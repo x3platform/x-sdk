@@ -15,9 +15,9 @@ ${table.Description}
 _${table.Description}_  
 #end
 
-| 列名<br />Column Name      | 类型（长度）<br />Type(Length)    | 默认值<br />Default   | 描述<br />Description   | 主键<br />PK   | 外键<br />FK   | 索引<br />Index |  
-| :--                       | :--                               | :--                   | :---                   | :--            | :--            | :--            |  
+| 列名<br />Column Name      | 类型（长度）<br />Type(Length)    | 默认值<br />Default   | 描述<br />Description   | 主键<br />PK   | 外键<br />FK   | 索引<br />Index   
+| :--                       | :--                               | :--                   | :---                   | :--            | :--            | :--              
 #foreach($column in $table.Columns)
-| ${column.Name} | ${column.NativeType} | ${column.DefaultValue} | ${column.Description} | #if(${column.PrimaryKey})√#else #end | #if(${column.ForeignKey})√#else #end |  |  
+| ${column.Name} | ${column.NativeType} | ${column.DefaultValue} | ${column.Description} | #if(${column.PrimaryKey})√#else #end | #if(${column.ForeignKey})√#else #end |    
 #end
 #end

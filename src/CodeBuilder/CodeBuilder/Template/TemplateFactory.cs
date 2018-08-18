@@ -16,6 +16,7 @@ namespace X3Platform.CodeBuilder.Template
 
             if (template == null) throw new Exception("创建[" + className + "]类型对象失败,请确认此类型是否存在.");
 
+
             template.Init(taskName, configuration);
 
             return template;
