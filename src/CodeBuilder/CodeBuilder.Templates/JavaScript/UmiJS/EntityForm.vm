@@ -1,0 +1,115 @@
+## UmiJS 服务类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${model}
+## - ${fields}
+
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Row, Col, Tabs, Form, Input, Checkbox, Button, Switch, Modal, Select, Icon } from 'antd';
+import x from 'x-lib';
+import app from '../../../app';
+// 设置配置信息
+const config = app.config;
+
+const TabPane = Tabs.TabPane;
+const FormItem = Form.Item;
+const Option = Select.Option;
+
+const EntityForm = (props) => {
+  const dispatch = props.dispatch;
+  const { validateFields, getFieldDecorator, getFieldsValue, setFieldsValue, resetFields } = props.form;
+  const { objectEditMode, currentItem } = props.CategoryModel;
+  
+  // 设置默认标题
+  const defaultTitle = '';
+
+  const entity = currentItem || {};
+
+  // -------------------------------------------------------
+  // 根据实际情况设置相关参数
+  // -------------------------------------------------------
+
+  // 保存
+  const handleSave = () => {
+    validateFields((errors) => {
+      if (errors) {
+        return;
+      }
+
+      const data = { ...getFieldsValue() };
+
+      if (objectEditMode === 'new') {
+        data.id = x.guid.create();
+      } else {
+        // 编辑
+        data.id = currentItem.id;
+      }
+
+      dispatch({ type: '${model}/save', payload: data });
+    });
+  };
+
+  // 设置对话框属性
+  const modalProps = {
+    // 自定义样式
+    className: 'x-antd-modal-no-body-padding',
+    // 标题
+    title: props.title || defaultTitle,
+	// 对话框是否可见
+    visible: props.visible,
+    wrapClassName: 'vertical-center-modal',
+    // 对话框宽度
+    width: 800,
+    // 点击蒙层是否允许关闭
+    maskClosable: false,
+    // 垂直居中展示 Modal
+    centered: true,
+    // Modal 完全关闭后的回调
+    afterClose: () => resetFields(),
+	// 点击遮罩层或右上角叉或取消按钮的回调
+    onCancel: props.onCancel,
+	// 点击确定回调
+    onOk: handleSave
+  };
+
+  return (
+    <Modal {...modalProps}>
+      <div
+        style={{
+          height: app.getClientRange().height - 300
+        }}>
+        <Form layout="horizontal">
+          <Tabs defaultActiveKey="1">
+            <Tabs.TabPane tab="基本信息" key="1">
+              <Row>
+#foreach($field in $fields)
+                <Col span={24}>
+                  <FormItem label="${field.Description}" {...config.defaults.formItemLayout}>
+                    {getFieldDecorator('${field.Name}', {
+                      initialValue: entity.${field.Name},
+                      rules: [{ required: true, message: '必填' }]
+                    })(<Input />)}
+                  </FormItem>
+                </Col>
+#end
+              <Row>
+            </Tabs.TabPane>
+          </Tabs>
+        </Form>
+      </div>
+    </Modal>
+  );
+};
+
+// 校验从父组件传递的属性值是否符合
+EntityForm.propTypes = {
+  title: PropTypes.any,
+  visible: PropTypes.any,
+  form: PropTypes.object,
+  onCancel: PropTypes.func
+};
+
+export default Form.create()(EntityForm);

@@ -25,7 +25,7 @@
 #else
       <if test="param_${field.DataColumnName} != null">
 #end
-        AND ${field.DataColumnName} = #{param_${field.DataColumnName}}
+        AND t.${field.DataColumnName} = #{param_${field.DataColumnName}}
       </if>
 #end
     </where>
@@ -78,7 +78,7 @@
     SELECT * FROM ${dataTableName} WHERE id = #{id}
   </select>  
   <select id="findAll" parameterType="java.util.Map" resultMap="BaseResultMap" >
-    SELECT * FROM ${dataTableName}
+    SELECT * FROM ${dataTableName} t
     <if test="_parameter != null">
       <include refid="Select_Where_Clause" />
     </if>
@@ -93,7 +93,7 @@
     </if>
   </select>
   <select id="getRowCount" >
-    SELECT COUNT(0) AS "RowCount" FROM ${dataTableName}
+    SELECT COUNT(0) AS "RowCount" FROM ${dataTableName} t
     <if test="_parameter != null">
       <include refid="Select_Where_Clause" />
     </if>

@@ -1,0 +1,136 @@
+## 实体类生成模板
+##
+## 参数:
+## - ${className}
+## - ${namespace}
+## - ${serviceName}
+## - ${locationPath}
+import { message } from 'antd';
+// 根据实际情况修改 service 文件相对位置
+import { save, physicalDelete, findOne, findAll, query } from '../services/${serviceName}';
+// 根据实际情况修改 app 配置文件相对位置
+import app from '../app';
+// 设置配置信息
+const config = app.config;
+// 设置日志对象
+const logger = app.logger('${namespace}');
+
+export default {
+  namespace: '${namespace}',
+  state: {
+    // 查询信息
+    searchText: '',
+    // 树节点信息
+    treeNodes: [],
+    // 查询对象,
+    query: {},
+    // 内容分页对象
+    paging: config.paging,
+    // 内容列表
+    list: [],
+    // 当前项
+    currentItem: {},
+    // 表单信息
+    formVisible: false,
+    // 对象编辑状态
+    objectEditMode: 'new'
+  },
+  // 订阅
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen((location) => {
+        // 监听页面路由路径
+        if (location.pathname === '${locationPath}') {
+          dispatch({
+            type: 'query',
+            payload: {
+              paging: config.paging
+            }
+          });
+        }
+      });
+    }
+  },
+  // effects: 主要负责处理数据流程
+  effects: {
+    /**
+     * 查询过滤
+     */
+    *query({ payload }, { call, put }) {
+      let res = yield call(query, payload);
+
+      if (res.code === '0') {
+        yield put({
+          type: 'setState',
+          payload: { list: res.data, paging: res.paging }
+        });
+      }
+    },
+    /**
+     * 保存
+     */
+    *save({ payload }, { select, call, put }) {
+      const res = yield call(save, { ...payload });
+      const { query, paging } = yield select((state) => {
+        const model = state['${namespace}'];
+        return {query:model.query, paging: model.paging};
+      });
+
+      if (res.code === '0') {
+        message.success(res.message);
+        // 查询列表
+        yield put({
+          type: 'query',
+          payload: {
+            query: query,
+            paging: paging
+          }
+        });
+        // 关闭表单
+        yield put({ type: 'closeForm' });
+      }
+    },
+    /**
+     * 删除
+     */
+    *delete({ payload }, { select, call, put }) {
+      const res = yield call(physicalDelete, payload);
+      const { query, paging } = yield select((state) => {
+        const model = state['${namespace}'];
+        return {query:model.query, paging: model.paging};
+      });
+
+      if (res.code === '0') {
+        message.success(res.message);
+        yield put({
+          type: 'query',
+          payload: {
+            query: query,
+            paging: paging
+          }
+        });
+      }
+    }
+  },
+  // reducers: 主要负责处理 state 数据
+  reducers: {
+    /**
+     * 默认设置 State 方法
+     */
+    setState(state, action) {
+      return { ...state, ...action.payload };
+    },
+    /**
+     * 显示表单
+     */
+    openForm(state, action) {
+      return { ...state, ...action.payload, formVisible: true };
+    },
+    /**
+     * 关闭表单
+     */
+    closeForm(state) {
+      return { ...state, formVisible: false };
+    }
+  }
+};

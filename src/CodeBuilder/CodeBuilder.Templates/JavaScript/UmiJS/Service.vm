@@ -1,0 +1,47 @@
+## UmiJS 服务类生成模板
+##
+## 参数:
+## - ${className}
+## - ${microserviceName}
+## - ${requestPath}
+// 根据实际情况修改 app 配置文件相对位置
+import app from '../../../../app';
+
+const http = app.http;
+const config = app.config;
+const apiHost = config.microservices.${microserviceName};
+
+export async function save(params) {
+  const url = `${apiHost}/${requestPath}/save`;
+  return http.post(url, params);
+}
+
+export async function physicalDelete(params) {
+  const url = `${apiHost}/${requestPath}/delete`;
+  return http.post(url, params);
+}
+
+export async function findOne(params) {
+  const url = `${apiHost}/${requestPath}/findOne`;
+  return http.post(url, params);
+}
+
+export async function findAll(params) {
+  const url = `${apiHost}/${requestPath}/findAll`;
+  return http.post(url, params);
+}
+
+export async function query(params) {
+  const url = `${apiHost}/${requestPath}/query`;
+  return http.post(url, params);
+}
+
+// export async function getDynamicTreeView(params) {
+//  const url = `${apiHost}/${requestPath}/getDynamicTreeView`;
+//  return http.post(url, params);
+// }
+
+// export async function getDynamicTreeView(params) {
+//  const url = `${apiHost}/${requestPath}/getDynamicTreeView`;
+//  return http.post(url, params);
+// }

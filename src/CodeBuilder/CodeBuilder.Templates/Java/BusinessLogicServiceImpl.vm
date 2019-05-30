@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 /**
+ *
+ * @author: ${author}
  */
 public class ${className} implements ${businessLogicInterface} {
   /**

@@ -1,0 +1,77 @@
+## UmiJS 服务类生成模板
+##
+## 参数:
+## - ${package}
+## - ${className}
+## - ${fields}
+package ${package};
+
+import com.x3platform.util.*;
+
+import java.util.*;
+
+/**
+ *
+ */
+public class ${className}
+{
+  /**
+   * 默认构造函数
+   */
+  public ${className}()
+  {
+  }        
+#foreach($field in $fields)
+
+  private ${field.Type} ${field.Name} = ${field.DefaultValue};
+
+  /**
+   * ${field.Description}
+   */
+  public ${field.Type} get${field.NameFirstUpperCase}() {
+    return ${field.Name};
+  }
+
+  public void set${field.NameFirstUpperCase}(${field.Type} value) {
+    ${field.Name} = value;
+  }  
+#end
+}
+
+// 根据实际情况修改 app 配置文件位置
+import app from '../../../../app';
+
+const http = app.http;
+const config = app.config;
+const apiHost = config.microservices.apps;
+const logger = app.logger('applications/application-menu');
+
+export async function save(params) {
+  const url = `${apiHost}/application/save';
+  return http.post(url, params);
+}
+
+export async function physicalDelete(params) {
+  const url = `${apiHost}/application/delete';
+  return http.post(url, params);
+}
+
+export async function findOne(params) {
+  const url = `${apiHost}/application/findOne';
+  return http.post(url, params);
+}
+
+export async function findAll(params) {
+  const url = `${apiHost}/application/findAll';
+  return http.post(url, params);
+}
+
+export async function query(params) {
+  const url = `${apiHost}/application/query`;
+  return http.post(url, params);
+}
+
+export async function getDynamicTreeView(params) {
+  const url = `${apiHost}/application/getDynamicTreeView`;
+  return http.post(url, params);
+}

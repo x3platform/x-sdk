@@ -49,8 +49,8 @@ public class ${className} {
     ${businessLogicInterface} service = ${businessLogicServiceInstance};
     // 返回代码
     int result = 0;
-
-    for (int i = 0; i < 15; i++) {
+    // 根据实际情况设置需要测试验证的数据数量
+    for (int i = 0; i < 3; i++) {
       // 设置 测试对象的标识
       String id = "test_" + DigitalNumberContext.generate("Key_Nonce");
 
@@ -114,6 +114,8 @@ public class ${className} {
     ${businessLogicInterface} service = ${businessLogicServiceInstance};
     // 设置 测试查询参数
     DataQuery query = new DataQuery();
+    // 设置查询长度
+    query.setLength(this.mockEntities.size());
 
     List<${entityClass}> list = service.findAll(query);
 

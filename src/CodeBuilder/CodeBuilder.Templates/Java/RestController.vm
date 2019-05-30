@@ -34,14 +34,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 /**
- *
+ * @author: ${author}
  */
 @Lazy(true)
 @RestController
 @RequestMapping("${requestUri}")
 public class ${className}
 {
-    // 业务服务接口
+    /**
+     * 业务服务接口
+     */
     private ${businessLogicInterface} service = null; // ${businessLogicServiceInstance};
 
     // -------------------------------------------------------
@@ -54,7 +56,7 @@ public class ${className}
    * @return 返回操作结果
    */
   @RequestMapping("/save")
-  public String Save(@RequestBody String data) {
+  public String save(@RequestBody String data) {
     ${entityClass} entity = JSON.parseObject(data, ${entityClass}.class);
 
     this.service.save(entity);
@@ -113,7 +115,7 @@ public class ${className}
 
     DataQuery query = DataQuery.create(req.getString("query"));
 
-    // 根据实际需要设置当前用户权限
+    /// 根据实际需要设置当前用户权限
     // query.getVariables().put("accountId", KernelContext.getCurrent().getUser().getId())
             
     // if (req.getString("su") == "1" && AppsSecurity.IsAdministrator(KernelContext.getCurrent().getUser(), ${applicationName}Configuration.ApplicationName))
@@ -121,7 +123,7 @@ public class ${className}
     //   query.getVariables().put("elevatedPrivileges", "1");
     // }
 
-    // 根据实际需要设置查询参数
+    /// 根据实际需要设置查询参数
     // query.getWhere().put("Name", searchText);
     // query.setLength(length);
 
@@ -142,7 +144,7 @@ public class ${className}
    * @return 返回一个相关的实例列表信息
    */
   @RequestMapping("/query")
-  public String Query(@RequestBody String data) {
+  public String query(@RequestBody String data) {
     JSONObject req = JSON.parseObject(data);
 
     DataPaging paging = DataPagingUtil.Create(req.getString("paging"));
@@ -189,7 +191,7 @@ public class ${className}
 
     entity.setId(DigitalNumberContext.generate("Key_Guid"));
     
-    // 根据实际需要设置默认值
+    /// 根据实际需要设置默认值
     // entity.setStatus(1);
     // entity.setModifiedDate(new Date());
     // entity.setCreatedDate(new Date());

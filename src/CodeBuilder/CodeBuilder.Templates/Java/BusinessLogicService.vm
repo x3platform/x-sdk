@@ -15,6 +15,7 @@ import java.util.*;
 
 /**
  *
+ * @author: ${author}
  */
 public interface ${interfaceName} {
 
@@ -26,7 +27,7 @@ public interface ${interfaceName} {
    * 保存记录
    *
    * @param entity 实例 ${entityClass} 详细信息
-   * @return 实例 ${entityClass} 详细信息
+   * @return 返回消息代码 0=表示成功
    */
   int save(${entityClass} entity);
 
@@ -34,6 +35,7 @@ public interface ${interfaceName} {
    * 删除记录
    *
    * @param id 标识
+   * @return 返回消息代码 0=表示成功
    */
   int delete(String id);
 

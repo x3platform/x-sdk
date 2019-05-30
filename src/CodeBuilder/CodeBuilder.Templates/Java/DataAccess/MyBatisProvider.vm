@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  *
+ * @author: ${author}
  */
 public interface ${dataAccessInterface} {
     
@@ -25,6 +26,7 @@ public interface ${dataAccessInterface} {
    * 添加记录
    *
    * @param record ${entityClass} 实例的详细信息
+   * @return 返回消息代码 0=表示成功
    */
   int insert(${entityClass} record);
   
@@ -32,6 +34,7 @@ public interface ${dataAccessInterface} {
    * 修改记录
    *
    * @param record ${entityClass} 实例的详细信息
+   * @return 返回消息代码 0=表示成功
    */
   int updateByPrimaryKey(${entityClass} record);
     
@@ -39,6 +42,7 @@ public interface ${dataAccessInterface} {
    * 删除记录
    *
    * @param id 标识
+   * @return 返回消息代码 0=表示成功
    */
   int deleteByPrimaryKey(String id);
 

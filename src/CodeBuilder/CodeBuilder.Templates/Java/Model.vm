@@ -8,10 +8,12 @@ package ${package};
 
 import com.x3platform.util.*;
 
+import java.math.*;
 import java.util.*;
 
 /**
  *
+ * @author: ${author}
  */
 public class ${className}
 {
