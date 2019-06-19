@@ -39,7 +39,7 @@ public class ${className}
 }
 
 // 根据实际情况修改 app 配置文件位置
-import app from '../../../../app';
+import app from '@/app';
 
 const http = app.http;
 const config = app.config;

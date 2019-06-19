@@ -88,6 +88,7 @@
     <Compile Include="CSharp\CustomPluginContext.cs" />
     <Compile Include="JavaScript\JavaScriptField.cs" />
     <Compile Include="JavaScript\JavaScriptGenerator.cs" />
+    <Compile Include="JavaScript\JSON\Model.cs" />
     <Compile Include="JavaScript\UmiJS\EntityForm.cs" />
     <Compile Include="JavaScript\UmiJS\EntityList.cs" />
     <Compile Include="JavaScript\UmiJS\Model.cs" />
@@ -151,6 +152,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="JavaScript\Copyright.vm" />
+    <None Include="JavaScript\JSON\Model.vm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="JavaScript\UmiJS\EntityForm.vm" />
     <None Include="JavaScript\UmiJS\EntityList.vm" />
     <None Include="JavaScript\UmiJS\Model.vm" />

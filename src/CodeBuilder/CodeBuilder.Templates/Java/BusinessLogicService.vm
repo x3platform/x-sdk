@@ -26,7 +26,7 @@ public interface ${interfaceName} {
   /**
    * 保存记录
    *
-   * @param entity 实例 ${entityClass} 详细信息
+   * @param entity {@link ${entityClass}} 实例 详细信息
    * @return 返回消息代码 0=表示成功
    */
   int save(${entityClass} entity);
@@ -47,7 +47,7 @@ public interface ${interfaceName} {
    * 查询某条记录
    *
    * @param id 标识
-   * @return 返回实例 ${entityClass} 的详细信息
+   * @return 返回 {@link ${entityClass}} 实例的详细信息
    */
   ${entityClass} findOne(String id);
    
@@ -56,7 +56,7 @@ public interface ${interfaceName} {
    * 查询所有相关记录
    *
    * @param query 数据查询参数
-   * @return 返回所有实例 ${entityClass} 的详细信息
+   * @return 返回所有 {@link ${entityClass}} 实例的详细信息
    */
   List<${entityClass}> findAll(DataQuery query);
 

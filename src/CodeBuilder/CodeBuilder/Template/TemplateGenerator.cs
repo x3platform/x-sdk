@@ -32,7 +32,7 @@ namespace X3Platform.CodeBuilder.Template
             set { description = value; }
         }
 
-        private string author = "RuanYu";
+        private string author = "ruanyu";
 
         /// <summary>作者</summary>
         public string Author
@@ -52,7 +52,8 @@ namespace X3Platform.CodeBuilder.Template
         /// <summary>初始化配置</summary>
         /// <param name="taskName"></param>
         /// <param name="configuration"></param>
-        public virtual void Init(string taskName, CodeBuilderConfiguration configuration) { }
+        public virtual void Init(string taskName, CodeBuilderConfiguration configuration) {
+        }
 
         List<ITemplateObserver> observers = new List<ITemplateObserver>();
 

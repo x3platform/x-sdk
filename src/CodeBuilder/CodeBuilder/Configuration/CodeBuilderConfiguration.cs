@@ -63,6 +63,16 @@ namespace X3Platform.CodeBuilder.Configuration
         }
         #endregion
 
+        /// <summary>作者</summary>
+        private string m_Author;
+
+        [XmlElement("author")]
+        public string Author
+        {
+            get { return m_Author; }
+            set { m_Author = value; }
+        }
+
         /// <summary>默认名称空间</summary>
         private string m_NamespaceRoot;
 

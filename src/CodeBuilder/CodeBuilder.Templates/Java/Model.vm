@@ -28,12 +28,17 @@ public class ${className}
   private ${field.Type} ${field.Name} = ${field.DefaultValue};
 
   /**
-   * ${field.Description}
+   * 获取${field.Description}
+   * @return ${field.Description}
    */
   public ${field.Type} get${field.NameFirstUpperCase}() {
     return ${field.Name};
   }
-
+  
+  /**
+   * 设置${field.Description}
+   * @param value 值
+   */
   public void set${field.NameFirstUpperCase}(${field.Type} value) {
     ${field.Name} = value;
   }  

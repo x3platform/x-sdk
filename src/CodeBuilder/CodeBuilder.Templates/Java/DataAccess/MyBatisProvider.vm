@@ -25,7 +25,7 @@ public interface ${dataAccessInterface} {
   /**
    * 添加记录
    *
-   * @param record ${entityClass} 实例的详细信息
+   * @param record {@link {@link ${entityClass}} 实例的详细信息
    * @return 返回消息代码 0=表示成功
    */
   int insert(${entityClass} record);
@@ -33,7 +33,7 @@ public interface ${dataAccessInterface} {
   /**
    * 修改记录
    *
-   * @param record ${entityClass} 实例的详细信息
+   * @param record {@link ${entityClass}} 实例的详细信息
    * @return 返回消息代码 0=表示成功
    */
   int updateByPrimaryKey(${entityClass} record);
@@ -54,7 +54,7 @@ public interface ${dataAccessInterface} {
    * 查询某条记录
    *
    * @param id 标识
-   * @return 返回一个 ${entityClass} 实例的详细信息
+   * @return 返回一个 {@link ${entityClass}} 实例的详细信息
    */
   ${entityClass} selectByPrimaryKey(String id);
     
@@ -62,7 +62,7 @@ public interface ${dataAccessInterface} {
    * 查询所有相关记录
    *
    * @param params 查询参数集合
-   * @return 返回所有 ${entityClass} 实例的详细信息
+   * @return 返回所有 {@link ${entityClass}} 实例的详细信息
    */
   List<${entityClass}> findAll(Map params);
   

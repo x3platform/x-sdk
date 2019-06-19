@@ -76,6 +76,9 @@ namespace X3Platform.CodeBuilder.Templates.Java.Tests
         #region 函数:Init(string taskName, CodeBuilderConfiguration configuration)
         public override void Init(string taskName, CodeBuilderConfiguration configuration)
         {
+            // 作者
+            this.Author = configuration.Author;
+
             // 名称空间
             this.Package = ((string.IsNullOrEmpty(configuration.NamespaceRoot)) ? string.Empty : (configuration.NamespaceRoot + ".")) +
                 configuration.Tasks[taskName].Properties["Package"].Value;
@@ -117,6 +120,7 @@ namespace X3Platform.CodeBuilder.Templates.Java.Tests
             VelocityContext context = new VelocityContext();
 
             context.Put("self", this);
+            context.Put("author", this.Author);
             context.Put("package", this.Package);
             context.Put("className", this.ClassName);
             context.Put("entityClassPackage", this.EntityClassPackage);

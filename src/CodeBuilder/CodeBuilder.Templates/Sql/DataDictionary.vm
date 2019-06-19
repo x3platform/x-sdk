@@ -8,8 +8,8 @@
 Data Dictionary  
   
 #foreach($table in $tables)
-
-**Table Name: ${table.Name}**  
+${h3} ${table.Description}
+**表名(Table Name): ${table.Name}**  
 ${table.Description}
 #if($table.Description != '')
 _${table.Description}_  

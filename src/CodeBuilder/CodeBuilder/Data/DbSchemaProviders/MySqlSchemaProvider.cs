@@ -155,7 +155,11 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                     // Êä³ö×¢ÊÍÐÅÏ¢
                     string comment = row["Comment"].ToString();
 
-                    if (comment.IndexOf(';') == -1) return string.Empty;
+                    if (comment.IndexOf('-') > 0)
+                    {
+
+                        return comment.Substring(comment.LastIndexOf('-') + 1, comment.Length - comment.LastIndexOf('-') - 1);
+                    }
 
                     return comment.Substring(0, comment.IndexOf(';'));
                 }
@@ -296,12 +300,13 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
 
             switch (actualType)
             {
-                case "nchar":
                 case "char":
-                case "nvarchar":
                 case "varchar":
-                case "ntext":
-                case "text": return DbType.String;
+                case "tinytext":
+                case "text":
+                case "mediumtext":
+                case "longtext":
+                    return DbType.String;
 
                 case "date": return DbType.Date;
                 case "datetime": return DbType.DateTime;
@@ -408,7 +413,7 @@ namespace X3Platform.CodeBuilder.Data.DbSchemaProviders
                 case DbType.Currency:
                 case DbType.VarNumeric:
                 case DbType.Decimal: return "decimal";
-                    
+
                 case DbType.Date: return "datetime";
                 case DbType.DateTime: return "datetime";
                 case DbType.Double: return "float";

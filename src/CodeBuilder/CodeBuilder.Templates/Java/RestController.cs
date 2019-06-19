@@ -147,6 +147,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
             VelocityContext context = new VelocityContext();
 
             context.Put("self", this);
+            context.Put("author", this.Author);
             context.Put("package", this.Package);
             context.Put("className", this.ClassName);
             context.Put("applicationName", this.ApplicationName);

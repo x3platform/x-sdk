@@ -92,12 +92,16 @@ namespace X3Platform.CodeBuilder.Templates.Sql
         {
             VelocityContext context = new VelocityContext();
 
+            context.Put("h1", "#");
+            context.Put("h2", "##");
+            context.Put("h3", "###");
             context.Put("tables", this.tables);
 
             return VelocityManager.Instance.ParseTemplateVirtualPath(context,
                         StringHelper.NullOrEmptyTo(TemplateFile, "templates/Sql/DataDictionary.vm"));
         }
         #endregion
+
         /// <summary>  
         /// 计算文本长度，区分中英文字符，中文算两个长度，英文算一个长度
         /// </summary>

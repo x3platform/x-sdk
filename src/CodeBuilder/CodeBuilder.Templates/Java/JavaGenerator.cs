@@ -114,7 +114,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
                 case DbType.AnsiString: return "String";
                 case DbType.AnsiStringFixedLength: return "String";
                 case DbType.Binary: return "byte[]";
-                case DbType.Boolean: return "bool";
+                case DbType.Boolean: return "Boolean";
                 case DbType.Byte: return "int";
                 case DbType.Currency: return "BigDecimal";
                 case DbType.Date: return "Date";

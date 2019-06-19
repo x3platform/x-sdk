@@ -31,6 +31,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
         /// <param name="configuration"></param>
         public override void Init(string taskName, CodeBuilderConfiguration configuration)
         {
+            this.Author = configuration.Author;
             // 模板文件位置
             this.TemplateFile = configuration.Tasks[taskName].Properties["TemplateFile"] == null ? null : configuration.Tasks[taskName].Properties["TemplateFile"].Value;
 
@@ -84,6 +85,7 @@ namespace X3Platform.CodeBuilder.Templates.Java
         {
             VelocityContext context = new VelocityContext();
 
+            context.Put("author", this.Author);
             context.Put("package", this.Package);
             context.Put("className", this.ClassName);
             context.Put("fields", this.fields);

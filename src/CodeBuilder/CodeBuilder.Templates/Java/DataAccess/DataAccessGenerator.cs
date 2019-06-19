@@ -94,6 +94,9 @@ namespace X3Platform.CodeBuilder.Templates.Java.DataAccess
         #region 函数:Init(string taskName, CodeBuilderConfiguration configuration)
         public override void Init(string taskName, CodeBuilderConfiguration configuration)
         {
+            // 作者
+            this.Author = configuration.Author;
+
             // 名称空间前缀
             this.DataTableName = configuration.Tasks[taskName].Properties["DataTable"].Value;
 
